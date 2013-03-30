@@ -1,0 +1,67 @@
+html,body {
+	height: 100%;
+}
+body {
+	background: white;
+	padding-top: 60px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+}
+a,a:hover{color:#378110;}
+@media (max-width: 979px) {
+	body {padding-top: 0;}
+	.navbar-inverse .navbar-inner {
+		background-image: none;	
+	}
+}
+.brand {
+	margin-left: 0 !important;
+}
+.brand strong,
+.nav.pull-right > li > a > strong {
+	color: #53b220;
+	-webkit-transition: color .1s ease;
+transition: color .1s ease;
+}
+.brand:hover strong {
+	color: #95ef64;
+}
+.sidebar-nav {
+	padding: 9px 0;
+}
+.nav-list > .active > a,
+.nav-list > .active > a:hover {
+	background-color: #378110;
+}
+.nav-list > .active > a > .label-inverse {
+	background-color: #fff;
+	text-shadow: none;
+	color: #378110;
+}
+#dirtree li a,
+#filelist li a {
+	color: #222;
+}
+#dirtree li.active a,
+#filelist li.active a {
+	color: white;
+}
+#filelist {
+	margin: 0 -19px;
+	min-height: 200px;
+}
+#filelist.loading {
+	background: #fff url(../img/ajax-loader.gif) center center no-repeat;
+}
+#path {
+	font-weight: bold;
+	font-size: 22px;
+	line-height: 30px;
+}
+.alert {
+	padding: 8px 14px;
+}
+.nav-tabs{margin-bottom:0;padding:0 20px}
+.tab-content{background:#fff;padding:20px}
+.nav-tabs >li >a:hover{border-color:#EEE #EEE #DDD}
+.nav >li >a:hover{background-color:#EEE}
