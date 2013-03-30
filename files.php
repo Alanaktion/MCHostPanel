@@ -11,7 +11,7 @@ if(!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 ?><!doctype html>
 <html>
 <head>
-	<title>File Manager | Kiwitree Panel</title>
+	<title>File Manager | MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">

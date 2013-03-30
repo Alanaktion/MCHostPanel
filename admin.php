@@ -41,7 +41,7 @@ if($_POST['action']=='server-stop')
 ?><!doctype html>
 <html>
 <head>
-	<title>Administration | Kiwitree Panel</title>
+	<title>Administration | MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">

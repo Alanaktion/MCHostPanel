@@ -38,7 +38,7 @@ if($_SESSION['user']) {
 ?><!doctype html>
 <html>
 <head>
-	<title>Dashboard | Kiwitree Panel</title>
+	<title>Dashboard | MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
@@ -203,22 +203,10 @@ form{margin:0;}
 						<legend>Server Information <small>Information about your server.</small></legend>
 						<p><b>Server Status:</b> <span class="label" id="lbl-status">Checking&hellip;</span><br>
 						    <b>IP:</b> <?php echo KT_LOCAL_IP.':'.$user['port']; ?><br>
-							<b>RAM:</b> <?php echo $user['ram'].'MB'; ?><br>
-							<b>Location:</b> Phoenix, Arizona<br>
-							<b>Processor:</b> Xeon E3-1230 v2 (V-122012)<br>
-							<b>Transfer:</b> 3200GB (1 Gbps Uplink)
+							<b>RAM:</b> <?php echo $user['ram'].'MB'; ?>
 						</p>
 					</div>
-					<div class="well">
-						<legend>mySQL Details <small>Details for your mySQL database.</small></legend>
-						<p class="alert alert-info">You must activate these details by sending us a support ticket requesting activation of your mySQL database.</p>
-							<b>Host:</b> localhost<br>
-							<b>Database Name:</b> user_<?php echo strtolower($_SESSION['user']); ?><br>
-							<b>User:</b> user_<?php echo substr($_SESSION['user'], 0, 5); ?><br>
-							<b>Password:</b> (Same as panel)
-						</p>
-					</div>
-					<footer class="muted">&copy; <?php echo date('Y'); ?> Alan Hardman/Kiwitree Hosting</footer>
+					<footer class="muted">&copy; <?php echo date('Y'); ?> Alan Hardman</footer>
 				</div>
 				<div class="span7">
 					<pre id="log" class="well well-small"></pre>
@@ -231,7 +219,7 @@ form{margin:0;}
 } else
 	echo '
 			<p class="alert alert-info">Your account does not have a server.</p>
-			<footer class="muted">&copy; '.date('Y').' Alan Hardman/Kiwitree Hosting</footer>
+			<footer class="muted">&copy; '.date('Y').' Alan Hardman</footer>
 ';
 ?>
 		</div>

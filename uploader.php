@@ -25,7 +25,7 @@ if($_FILES['files'] && $_POST['dir']) {
 ?><!doctype html>
 <html>
 <head>
-	<title>Upload Files | Kiwitree File Manager</title>
+	<title>Upload Files | MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-ui">
 	<meta name="author" content="Alan Hardman (http://alanaktion.com)">

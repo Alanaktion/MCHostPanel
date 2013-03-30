@@ -30,7 +30,7 @@ $dir = rtrim($dir,'/');
 ?><!doctype html>
 <html>
 <head>
-	<title>Edit File | Kiwitree Panel</title>
+	<title>Edit File | MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">

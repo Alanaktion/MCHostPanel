@@ -1,6 +1,6 @@
 	<div class="navbar navbar-inverse navbar-fixed-top">
 		<div class="navbar-inner">
-			<a class="brand" href="dashboard.php"><strong>Kiwitree</strong> Panel</a>
+			<a class="brand" href="dashboard.php">MC<strong>Host</strong>Panel</a>
 			<ul class="nav pull-right">
 <?php if($_SESSION['is_admin'] || $user['role']=='admin') { ?>
 				<li><a href="admin.php">Administration</a></li>
