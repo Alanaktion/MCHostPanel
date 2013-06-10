@@ -26,7 +26,7 @@ if($_POST['user']) {
 			<p class="alert alert-error">Delete <code>install.php</code>, otherwise anyone can create an administrator user!</p>
 		</div>
 		<div class="modal-footer">
-			<a class="btn btn-success" href="panel.php">Continue to Panel</a>
+			<a class="btn btn-success" href="dashboard.php">Continue to Panel</a>
 		</div>
 	</div>
 <?php } else { ?>

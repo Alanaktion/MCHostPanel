@@ -73,6 +73,26 @@ switch($_POST['req']) {
 	case 'server_log':
 		echo mclogparse(file_backread($user['home'].'/server.log',50));
 		break;
+	case 'players':
+		require_once 'inc/MinecraftQuery.class.php';
+		$mq = new MinecraftQuery();
+		try {
+			$mq->Connect(KT_LOCAL_IP,$user['port'],2); // 2 second timeout
+		} catch (MinecraftQueryException $ex) {
+			echo json_encode(array('error' => 1));
+		}
+		
+		$status = $mq->GetPlayers();
+		$players = $mq->GetPlayers();
+		
+		$data = array(
+			'max' => $status['MaxPlayers'],
+			'current' => $status['Players'],
+			'names' => $players
+		);
+		
+		echo json_encode($data);	
+		break;
 }
 
 ?>

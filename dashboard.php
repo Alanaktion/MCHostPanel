@@ -74,6 +74,22 @@ form{margin:0;}
 			if(!once)
 				window.setTimeout('updateStatus();',5000);
 		}
+		function updatePlayers() {
+			$.post('ajax.php',{
+				req: 'players'
+			},function(data){
+				if(data.error) {
+					$('#lbl-players').text('Unknown').attr('title','Enable Query in server.properties to see player information').tooltip();
+				} else {
+					$('#lbl-players').text(data.current + '/' + data.max);
+					$('#player-list').empty();
+					$.each(data.names,function(i,val) {
+						$('#player-list').append('<img src="http://alanaktion.net/mcface.php?user=' + val + '&amp;size=24" title="' + val + '" alt />');
+					});
+					$('#player-list img').tooltip();
+				}
+			},'json');
+		}
 		function server_start() {
 			$.post('ajax.php',{
 				req: 'server_start'
@@ -170,7 +186,7 @@ form{margin:0;}
 			<div class="row-fluid">
 				<div class="span5">
 					<div class="well">
-						<legend>Server Controls <small>Start, Stop, Reboot and Update.</small></legend>
+						<legend>Server Controls</legend>
 						<div class="btn-toolbar">
 							<div class="btn-group">
 								<button class="btn btn-large btn-primary ht" id="btn-srv-start" title="Start" disabled><i class="icon-play"></i></button>
@@ -200,11 +216,13 @@ form{margin:0;}
 						-->
 					</div>
 					<div class="well">
-						<legend>Server Information <small>Information about your server.</small></legend>
+						<legend>Server Information</legend>
 						<p><b>Server Status:</b> <span class="label" id="lbl-status">Checking&hellip;</span><br>
 						    <b>IP:</b> <?php echo KT_LOCAL_IP.':'.$user['port']; ?><br>
-							<b>RAM:</b> <?php echo $user['ram'].'MB'; ?>
+							<b>RAM:</b> <?php echo $user['ram'].'MB'; ?><br>
+							<b>Players:</b> <span id="lbl-players">Checking&hellip;</span>
 						</p>
+						<div class="player-list"></div>
 					</div>
 					<footer class="muted">&copy; <?php echo date('Y'); ?> Alan Hardman</footer>
 				</div>
