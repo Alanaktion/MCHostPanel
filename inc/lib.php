@@ -267,7 +267,7 @@ function server_start($name) {
 			sprintf(
 				KT_SCREEN_CMD_START, // Base command
 				escapeshellarg(KT_SCREEN_NAME_PREFIX.$user['user']), // Screen Name
-				$user['ram'], // Startup RAM
+				intval($user['ram']/2), // Startup RAM
 				$user['ram']  // Maximum RAM
 			)
 		);
