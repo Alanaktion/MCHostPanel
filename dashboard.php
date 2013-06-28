@@ -102,6 +102,9 @@ if ($_SESSION['user']) {
 				if (data.error) {
 					$('#lbl-players').text('Unknown').attr('title', 'Enable Query in server.properties to see player information').tooltip();
 				} else {
+					try{
+						console.log(data)
+					} catch(ex) {}
 					$('#lbl-players').text(data.current + '/' + data.max);
 					$('#player-list').empty();
 					$.each(data.names, function (i, val) {
