@@ -3,37 +3,37 @@ require_once 'inc/lib.php';
 
 session_start();
 
-if($_SESSION['user']) {
-	
-	if(!$user = user_info($_SESSION['user'])) {
+if ($_SESSION['user']) {
+
+	if (!$user = user_info($_SESSION['user'])) {
 		// User does not exist, redirect to login page
 		header('Location: .');
 		exit('Not Authorized');
 	}
-	
-} elseif($_POST['user'] && $_POST['pass']) {
-	
+
+} elseif ($_POST['user'] && $_POST['pass']) {
+
 	// Get user data
 	$user = user_info($_POST['user']);
-	
+
 	$_SESSION['is_admin'] = $user['role'] == 'admin';
-	
+
 	// Check user exists and password is good
-	if(!$user || !bcrypt_verify($_POST['pass'],$user['pass'])) {
+	if (!$user || !bcrypt_verify($_POST['pass'], $user['pass'])) {
 		// Login failure, redirect to login page
 		header('Location: ./?error=badlogin');
 		exit('Not Authorized');
 	}
-	
+
 	// Current user is valid
 	$_SESSION['user'] = $user['user'];
-	
+
 } else {
-	
+
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
-	
+
 }
 ?><!doctype html>
 <html>
@@ -45,144 +45,166 @@ if($_SESSION['user']) {
 	<link rel="stylesheet" href="css/style.css">
 	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
 	<style type="text/css">
-#cmd,#log{background-color:#000;color:#fff;}
-#cmd,#log{box-sizing:border-box;-moz-box-sizing:border-box;width:100%;}
-#cmd::selection,#log::selection{background:rgba(255,255,255,.4);color:#fff;}
-#log{overflow-y:scroll;}
-#cmd{height:30px;}
-form{margin:0;}
+		#cmd, #log {
+			background-color: #000;
+			color: #fff;
+		}
+
+		#cmd, #log {
+			box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			width: 100%;
+		}
+
+		#cmd::selection, #log::selection {
+			background: rgba(255, 255, 255, .4);
+			color: #fff;
+		}
+
+		#log {
+			overflow-y: scroll;
+		}
+
+		#cmd {
+			height: 30px;
+		}
+
+		form {
+			margin: 0;
+		}
 	</style>
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		function updateStatus(once) {
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'server_running'
-			},function(data){
-				if(data) {
+			}, function (data) {
+				if (data) {
 					$('#lbl-status').text('Running').addClass('label-success').removeClass('label-important');
-					$('#btn-srv-start').prop('disabled',true);
-					$('#btn-srv-stop,#btn-srv-restart').prop('disabled',false);
-					$('#cmd').prop('disabled',false);
+					$('#btn-srv-start').prop('disabled', true);
+					$('#btn-srv-stop,#btn-srv-restart').prop('disabled', false);
+					$('#cmd').prop('disabled', false);
 				} else {
 					$('#lbl-status').text('Stopped').addClass('label-important').removeClass('label-success');
-					$('#btn-srv-start').prop('disabled',false);
-					$('#btn-srv-stop,#btn-srv-restart').prop('disabled',true);
-					$('#cmd').prop('disabled',true);
+					$('#btn-srv-start').prop('disabled', false);
+					$('#btn-srv-stop,#btn-srv-restart').prop('disabled', true);
+					$('#cmd').prop('disabled', true);
 				}
-			},'json');
-			if(!once)
-				window.setTimeout('updateStatus();',5000);
+			}, 'json');
+			if (!once)
+				window.setTimeout('updateStatus();', 5000);
 		}
 		function updatePlayers() {
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'players'
-			},function(data){
-				if(data.error) {
-					$('#lbl-players').text('Unknown').attr('title','Enable Query in server.properties to see player information').tooltip();
+			}, function (data) {
+				if (data.error) {
+					$('#lbl-players').text('Unknown').attr('title', 'Enable Query in server.properties to see player information').tooltip();
 				} else {
 					$('#lbl-players').text(data.current + '/' + data.max);
 					$('#player-list').empty();
-					$.each(data.names,function(i,val) {
+					$.each(data.names, function (i, val) {
 						$('#player-list').append('<img src="http://alanaktion.net/mcface.php?user=' + val + '&amp;size=24" title="' + val + '" alt />');
 					});
 					$('#player-list img').tooltip();
 				}
-			},'json');
+			}, 'json');
 		}
 		function server_start() {
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'server_start'
-			},function(){
+			}, function () {
 				updateStatus(true);
 			});
 		}
 		function server_stop(callback) {
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'server_stop'
-			},function(){
+			}, function () {
 				updateStatus(true);
-				if(callback)
+				if (callback)
 					callback();
 			});
 		}
 		function refreshLog() {
 			updateStatus();
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'server_log'
-			},function(data){
-				if($('#log').scrollTop()==$('#log')[0].scrollHeight) {
+			}, function (data) {
+				if ($('#log').scrollTop() == $('#log')[0].scrollHeight) {
 					$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
 				} else {
 					$('#log').html(data);
 				}
-				window.setTimeout('refreshLog();',3000);
+				window.setTimeout('refreshLog();', 3000);
 			});
 		}
 		function refreshLogOnce() {
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'server_log'
-			},function(data){
+			}, function (data) {
 				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
 			});
 		}
-		$(document).ready(function(){
+		$(document).ready(function () {
 			updateStatus();
+			updatePlayers();
 			$('button.ht').tooltip();
-			$('#btn-srv-start').click(function(){
+			$('#btn-srv-start').click(function () {
 				server_start();
-				$(this).prop('disabled',true).tooltip('hide');
+				$(this).prop('disabled', true).tooltip('hide');
 			});
-			$('#btn-srv-stop').click(function(){
+			$('#btn-srv-stop').click(function () {
 				server_stop();
-				$(this).prop('disabled',true).tooltip('hide');
+				$(this).prop('disabled', true).tooltip('hide');
 			});
-			$('#btn-srv-restart').click(function(){
+			$('#btn-srv-restart').click(function () {
 				server_stop(server_start);
-				$('').prop('disabled',true).tooltip('hide');
+				$('').prop('disabled', true).tooltip('hide');
 			});
-			
+
 			// Send commands with form onSubmit
-			$('#frm-cmd').submit(function(){
-				$.post('ajax.php',{
+			$('#frm-cmd').submit(function () {
+				$.post('ajax.php', {
 					req: 'server_cmd',
 					cmd: $('#cmd').val()
-				},function(){
-					$('#cmd').val('').prop('disabled',false);
+				}, function () {
+					$('#cmd').val('').prop('disabled', false);
 					refreshLogOnce();
 				});
-				$('#cmd').prop('disabled',true);
+				$('#cmd').prop('disabled', true);
 				return false;
 			});
-			
+
 			// Fix sizing
-			$('#log').css('height',$(window).height()-200+'px');
-			
+			$('#log').css('height', $(window).height() - 200 + 'px');
+
 			// Initialize log
-			$.post('ajax.php',{
+			$.post('ajax.php', {
 				req: 'server_log'
-			},function(data){
+			}, function (data) {
 				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
-				window.setTimeout('refreshLog();',3000);
+				window.setTimeout('refreshLog();', 3000);
 			});
-			
+
 			// Keep sizing correct
-			$(document).resize(function(){
-				$('#log').css('height',$(window).height()-190+'px');
+			$(document).resize(function () {
+				$('#log').css('height', $(window).height() - 190 + 'px');
 			});
 		});
 	</script>
 </head>
 <body>
 <?php require 'inc/top.php'; ?>
-	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="dashboard.php">Dashboard</a></li>
-		<li><a href="files.php">File Manager</a></li>
-		<li><a href="console.php">Console</a></li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active">
-<?php if($user['ram']) { ?>
+<ul class="nav nav-tabs" id="myTab">
+	<li class="active"><a href="dashboard.php">Dashboard</a></li>
+	<li><a href="files.php">File Manager</a></li>
+	<li><a href="console.php">Console</a></li>
+</ul>
+<div class="tab-content">
+	<div class="tab-pane active">
+		<?php if ($user['ram']) { ?>
 			<div class="row-fluid">
 				<div class="span5">
 					<div class="well">
@@ -218,8 +240,8 @@ form{margin:0;}
 					<div class="well">
 						<legend>Server Information</legend>
 						<p><b>Server Status:</b> <span class="label" id="lbl-status">Checking&hellip;</span><br>
-						    <b>IP:</b> <?php echo KT_LOCAL_IP.':'.$user['port']; ?><br>
-							<b>RAM:</b> <?php echo $user['ram'].'MB'; ?><br>
+							<b>IP:</b> <?php echo KT_LOCAL_IP . ':' . $user['port']; ?><br>
+							<b>RAM:</b> <?php echo $user['ram'] . 'MB'; ?><br>
 							<b>Players:</b> <span id="lbl-players">Checking&hellip;</span>
 						</p>
 						<div class="player-list"></div>
@@ -233,14 +255,14 @@ form{margin:0;}
 					</form>
 				</div>
 			</div>
-<?php
-} else
-	echo '
+		<?php
+		} else
+			echo '
 			<p class="alert alert-info">Your account does not have a server.</p>
-			<footer class="muted">&copy; '.date('Y').' Alan Hardman</footer>
+			<footer class="muted">&copy; ' . date('Y') . ' Alan Hardman</footer>
 ';
-?>
-		</div>
+		?>
 	</div>
+</div>
 </body>
 </html>
