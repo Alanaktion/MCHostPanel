@@ -82,12 +82,13 @@ switch ($_POST['req']) {
 			echo json_encode(array('error' => 1));
 		}
 
-		$status = $mq->GetPlayers();
+		$status = $mq->GetInfo();
 		$players = $mq->GetPlayers();
 
 		$data = array(
 			'max' => $status['MaxPlayers'],
 			'current' => $status['Players'],
+			'status' => $status,
 			'names' => $players
 		);
 
