@@ -112,7 +112,9 @@ if ($_SESSION['user']) {
 					});
 					$('#player-list img').tooltip();
 				}
-			}, 'json');
+			}, 'json').error(function(){
+				$('#lbl-players').text('Error');
+			});
 		}
 		function server_start() {
 			$.post('ajax.php', {
