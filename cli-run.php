@@ -26,6 +26,7 @@ if(empty($_GET['action'])) {
 }
 
 // Initialize core
+chdir(dirname(__FILE__));
 require_once 'inc/lib.php';
 
 // Handle actions
