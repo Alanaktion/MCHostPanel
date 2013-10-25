@@ -71,7 +71,13 @@ switch ($_POST['req']) {
 		echo json_encode(server_running($user['user']));
 		break;
 	case 'server_log':
-		echo mclogparse(file_backread($user['home'] . '/server.log', 50));
+		if(is_file($user['home'] . "logs/latest.log")) {
+			echo mclogparse(file_backread($user['home'] . '/logs/latest.log', 50));
+		} elseif(is_file($user['home'] . "server.log")) {
+			echo mclogparse(file_backread($user['home'] . '/server.log', 50));
+		} else {
+			echo "No log file found.";
+		}
 		break;
 	case 'players':
 		require_once 'inc/MinecraftQuery.class.php';
