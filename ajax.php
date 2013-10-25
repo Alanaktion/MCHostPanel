@@ -71,9 +71,11 @@ switch ($_POST['req']) {
 		echo json_encode(server_running($user['user']));
 		break;
 	case 'server_log':
-		if(is_file($user['home'] . "logs/latest.log")) {
+		if(is_file($user['home'] . "/logs/latest.log")) {
+			// 1.7 logs
 			echo mclogparse(file_backread($user['home'] . '/logs/latest.log', 50));
-		} elseif(is_file($user['home'] . "server.log")) {
+		} elseif(is_file($user['home'] . "/server.log")) {
+			// 1.6 and earlier
 			echo mclogparse(file_backread($user['home'] . '/server.log', 50));
 		} else {
 			echo "No log file found.";
