@@ -83,7 +83,8 @@ if ($_POST['action'] == 'server-stop')
 						<?php
 						$ul = user_list();
 						foreach ($ul as $u)
-							echo '<option value="' . $u . '">' . $u . '</option>';
+							if($u != "empty")
+								echo '<option value="' . $u . '">' . $u . '</option>';
 						?>
 					</optgroup>
 				</select>
@@ -97,7 +98,8 @@ if ($_POST['action'] == 'server-stop')
 						<?php
 						$ul = user_list();
 						foreach ($ul as $u)
-							echo '<option value="' . $u . '">' . $u . '</option>';
+							if($u != "empty")
+								echo '<option value="' . $u . '">' . $u . '</option>';
 						?>
 					</optgroup>
 				</select>
@@ -110,7 +112,8 @@ if ($_POST['action'] == 'server-stop')
 					<?php
 					$ul = user_list();
 					foreach ($ul as $u)
-						echo '<option value="' . $u . '">' . $u . '</option>';
+						if($u != "empty")
+							echo '<option value="' . $u . '">' . $u . '</option>';
 					?>
 				</select>
 				<button type="submit" class="btn btn-danger">Log In</button>
