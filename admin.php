@@ -22,7 +22,7 @@ if ($_POST['action'] == 'user-switch' && $_POST['user']) {
 
 // Add new user
 if ($_POST['action'] == 'user-add')
-	user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram']);
+	user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
 
 // Start a server
 if ($_POST['action'] == 'server-start') {
