@@ -17,6 +17,7 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Go to install.php in your browser and set up an administrator user.
 - Delete install.php
 - Add any Minecraft server .jar file to your home directory, and rename it "craftbukkit.jar"
+- Ensure the web server user has write access to the data/ directory
 
 ### User setup
 
@@ -24,4 +25,5 @@ NOTE: Some features of this project including auto-updating and directory deleti
 - Go to Administration
 - Use the "Add a New User" form to set up a new account, the home directory SHOULD NOT be web accessible
 - Add any Minecraft server .jar file to the user's directory, and rename it "craftbukkit.jar"
+- Ensure the web server user has write access to the directory
 - If desired, you can now start the user's server from the Administration page
