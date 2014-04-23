@@ -38,6 +38,7 @@ function mclogparse($str) {
 
 // Strips control codes from log
 function mclogclean($str) {
-	$str = preg_replace(array("/\x1B\[[0-9]+;(1m|22m)/", "/\x1B\[(0;39|0;49)?m/"), "", $str);
+	$str = preg_replace("/\x1B\[([0-9]+;([0-9]+;)?(1|22))?m/", "", $str);
 	return $str;
 }
+
