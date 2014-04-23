@@ -21,19 +21,23 @@ function mclogparse($str) {
 	// Replace color codes
 	foreach(array_keys($fgColors) as $color)
 		$str = preg_replace("/\x1B\[".$color.';(1m|22m)/','</span><span style="color: '.$fgColors[$color].';">',$str);
-	
+
 	// Replace "default" codes with closing span
 	$str = preg_replace("/\x1B\[(0;39|0;49)?m/",'</span>', $str);
-	
+
 	// Color message types
 	$str = strtr($str,array(
 		'[INFO]' => '[<span style="color: #77ccff;">INFO</span>]',
 		'[WARNING]' => '[<span style="color: yellow;">WARNING</span>]',
 		'[SEVERE]' => '[<span style="color: red;">SEVERE</span>]'
 	));
-	
+
 	return $str;
-	
+
 }
 
-?>
+// Strips control codes from log
+function mclogclean($str) {
+	$str = preg_replace(array("/\x1B\[[0-9]+;(1m|22m)/", "/\x1B\[(0;39|0;49)?m/"), "", $str);
+	return $str;
+}
