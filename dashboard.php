@@ -105,7 +105,17 @@ if ($_SESSION['user']) {
 					try{
 						console.log(data)
 					} catch(ex) {}
-					$('#lbl-players').text(data.current + '/' + data.max);
+					
+					
+					if(data.players == false)
+				{
+				$('#lbl-players').text(0 + '/' + data.info.MaxPlayers);
+				}
+				else
+				{
+							$('#lbl-players').text(data.players.length + '/' + data.info.MaxPlayers);
+					
+				}	
 					$('#player-list').empty();
 					$.each(data.names, function (i, val) {
 						$('#player-list').append('<img src="http://alanaktion.net/mcface.php?user=' + val + '&amp;size=24" title="' + val + '" alt />');
