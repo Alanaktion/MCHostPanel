@@ -87,7 +87,8 @@ switch ($_POST['req']) {
 		try {
 			$mq->Connect(KT_LOCAL_IP, $user['port'], 2); // 2 second timeout
 		} catch (MinecraftQueryException $ex) {
-			echo json_encode(array('error' => 1));
+			echo json_encode(array('error' => 1, 'msg' => $ex->getMessage()));
+			die();
 		}
 
 		$data = array(
