@@ -105,17 +105,12 @@ if ($_SESSION['user']) {
 					try{
 						console.log(data)
 					} catch(ex) {}
-					
-					
-					if(data.players == false)
-				{
-				$('#lbl-players').text(0 + '/' + data.info.MaxPlayers);
-				}
-				else
-				{
-							$('#lbl-players').text(data.players.length + '/' + data.info.MaxPlayers);
-					
-				}	
+
+					if(data.players == false) {
+						$('#lbl-players').text(0 + '/' + data.info.MaxPlayers);
+					} else {
+						$('#lbl-players').text(data.players.length + '/' + data.info.MaxPlayers);
+					}
 					$('#player-list').empty();
 					$.each(data.names, function (i, val) {
 						$('#player-list').append('<img src="http://alanaktion.net/mcface.php?user=' + val + '&amp;size=24" title="' + val + '" alt />');
@@ -242,7 +237,7 @@ if ($_SESSION['user']) {
 							</div>-->
 						</div>
 						<!--
-						<div>Update Server: 
+						<div>Update Server:
 							<div class="btn-group" style="display: inline-block;">
 								<button class="btn btn-small" id="btn-upd-cb">CraftBukkit</button>
 								<button class="btn btn-small" id="btn-upd-mc">Minecraft Server</button>
