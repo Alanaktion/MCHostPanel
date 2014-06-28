@@ -1,4 +1,7 @@
 <?php
+/**
+ * copywrite James Pollock2014
+     */
     class MinecraftProfile{
         private $username;
         private $uuid;
