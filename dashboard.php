@@ -110,12 +110,15 @@ if ($_SESSION['user']) {
 						$('#lbl-players').text(0 + '/' + data.info.MaxPlayers);
 					} else {
 						$('#lbl-players').text(data.players.length + '/' + data.info.MaxPlayers);
+						$('#lbl-players').append('<br/><br/>');
+						$('#lbl-players').append('<legend>Player List</legend>');
 					}
-					$('#player-list').empty();
-					$.each(data.names, function (i, val) {
-						$('#player-list').append('<img src="http://alanaktion.net/mcface.php?user=' + val + '&amp;size=24" title="' + val + '" alt />');
+					$.each(data.players, function (i, val) {
+						console.log(val);
+						$('#lbl-players').append('<img src="http://jamesplanet.net/getface.php?username=' + val + '&amp;size=24" />');
+						$('#lbl-players').append(" " + val);
+						$('#lbl-players').append('<br/><br/>');
 					});
-					$('#player-list img').tooltip();
 				}
 			}, 'json').error(function(){
 				$('#lbl-players').text('Error');
