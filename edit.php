@@ -2,16 +2,21 @@
 require_once 'inc/lib.php';
 
 session_start();
-if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
+if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
 }
 
-if (!$_REQUEST['file']) {
+if (empty($_REQUEST['file'])) {
 	// Not file specified, return to file list
 	header('Location: files.php');
 	exit('No file specified');
+}
+
+// Prevent a simple directory security issue
+if(strpos($_REQUEST['file'], '..') !== false) {
+	exit('Invalid file path.');
 }
 
 // Save file if edited
