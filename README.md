@@ -7,7 +7,7 @@ NOTE: Some features of this project including auto-updating and directory deleti
 
 ### Requirements
 
-- PHP 5
+- PHP 5 with GD library
 - Java 7
 
 ### Installation
