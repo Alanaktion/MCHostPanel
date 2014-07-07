@@ -16,7 +16,7 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 <link rel="stylesheet" href="css/style.css">
-<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+<meta name="author" content="Alan Hardman [phpizza.com]">
 <script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">
@@ -113,7 +113,8 @@ $(document).ready(function () {
 
 	// Add rename button handler
 	$('#btn-rename').click(function () {
-		if (newname = prompt('Enter a new name for the file:', basename($('#filelist li.active a').attr('href')))) {
+		newname = prompt('Enter a new name for the file:', basename($('#filelist li.active a').attr('href')));
+		if (rename) {
 			$.post('ajax.php', {
 				req: 'rename',
 				path: $('#filelist li.active a').attr('href'),
@@ -121,8 +122,8 @@ $(document).ready(function () {
 			},function (data) {
 				loaddir(window.lastdir);
 			}).error(function () {
-					alert('There was an error deleting your files.');
-				});
+				alert('There was an error deleting your files.');
+			});
 		}
 	});
 
@@ -206,11 +207,10 @@ function loaddir(dir) {
 		$('#iframe-upload').attr('src', 'uploader.php?dir=' + encodeURIComponent(window.lastdir));
 
 	}, 'json').error(function () {
-			try {
-				console.log('Error loading directory "' + window.lastdir + '"')
-			} catch (ex) {
-			}
-		});
+		try {
+			console.log('Error loading directory "' + window.lastdir + '"');
+		} catch (ex) {}
+	});
 }
 
 function size_format(s) {
@@ -224,7 +224,6 @@ function size_format(s) {
 		s = s + ' bytes';
 	return s;
 }
-;
 
 function basename(path, suffix) {
 	var b = path.replace(/^.*[\/\\]/g, '');
@@ -236,11 +235,6 @@ function basename(path, suffix) {
 </head>
 <body>
 <?php require 'inc/top.php'; ?>
-<ul class="nav nav-tabs" id="myTab">
-	<li><a href="dashboard.php">Dashboard</a></li>
-	<li class="active"><a href="files.php">File Manager</a></li>
-	<li><a href="console.php">Console</a></li>
-</ul>
 <div class="tab-content">
 	<div class="tab-pane active">
 		<div class="container-fluid">
@@ -251,9 +245,6 @@ function basename(path, suffix) {
 							<li class="nav-header">Directories</li>
 							<li class="active" id="home"><a href="/"><span class="icon-home"></span> Home</a></li>
 							<li class="divider"></li>
-							<!--<li><a href="/sub-item"><i class="icon-folder-close"></i> sub-directory</a></li>
-							<li><a href="/sub-item/3rd-level item">&emsp;&ensp;<i class="icon-folder-close"></i> 3rd-level item</a></li>
-							<li><a href="/second sub-item"><i class="icon-folder-close"></i> second sub-directory</a></li>-->
 						</ul>
 					</div>
 				</div>
@@ -261,7 +252,6 @@ function basename(path, suffix) {
 					<div class="well">
 						<div class="row-fluid">
 							<p class="span6 btn-group" id="path"></p>
-
 							<div class="span6 btn-toolbar" style="margin-top:0;text-align:right;">
 								<div class="btn-group">
 									<button id="btn-delete" type="button" class="btn ht" title="Delete" disabled><i class="icon-trash"></i></button>
@@ -275,10 +265,7 @@ function basename(path, suffix) {
 								<button id="btn-upload" type="button" class="btn btn-primary"><i class="icon-upload icon-white"></i> Upload</button>
 							</div>
 						</div>
-						<ul class="nav nav-list" id="filelist">
-							<!--<li><a href="subdir" data-type="dir"><i class="icon-folder-close"></i> subdir</a></li>
-							<li><a href="file1" data-type="file"><i class="icon-file"></i> file1</a></li>-->
-						</ul>
+						<ul class="nav nav-list" id="filelist"></ul>
 					</div>
 				</div>
 			</div>

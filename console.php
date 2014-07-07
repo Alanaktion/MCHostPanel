@@ -2,7 +2,7 @@
 require_once 'inc/lib.php';
 
 session_start();
-if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
+if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
@@ -16,28 +16,21 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+	<meta name="author" content="Alan Hardman [phpizza.com]">
 	<style type="text/css">
-			/* .tab-content,.nav-tabs > li.active > a,.nav-tabs > li.active > a:hover, */
 		#cmd, #log {
 			background-color: #000;
 			color: #fff;
-		}
-
-		#cmd, #log {
 			box-sizing: border-box;
 			-moz-box-sizing: border-box;
 			width: 100%;
 		}
-
 		#log {
 			overflow-y: scroll;
 		}
-
 		#cmd {
 			height: 30px;
 		}
-
 		form {
 			margin: 0;
 		}
@@ -55,7 +48,7 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 				} else {
 					$('#log').html(data);
 				}
-				window.setTimeout('refreshLog();', 1000);
+				window.setTimeout(refreshLog, 1000);
 			});
 		}
 
@@ -105,7 +98,7 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 				req: 'server_log'
 			}, function (data) {
 				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
-				window.setTimeout('refreshLog();', 1000);
+				window.setTimeout(refreshLog, 1000);
 			});
 
 			// Keep sizing correct
@@ -118,11 +111,6 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 </head>
 <body>
 <?php require 'inc/top.php'; ?>
-<ul class="nav nav-tabs" id="myTab">
-	<li><a href="dashboard.php">Dashboard</a></li>
-	<li><a href="files.php">File Manager</a></li>
-	<li class="active"><a href="console.php">Console</a></li>
-</ul>
 <div class="tab-content">
 	<div class="tab-pane active">
 		<?php if ($user['ram']) { ?>
@@ -131,8 +119,9 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 				<input type="text" id="cmd" name="cmd" maxlength="250" autofocus>
 			</form>
 		<?php
-		} else
-			echo '<p class="alert alert-info">Your account does not have a server.</p>';
+			} else {
+				echo '<p class="alert alert-info">Your account does not have a server.</p>';
+			}
 		?>
 	</div>
 </div>
