@@ -12,12 +12,14 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 ?><!doctype html>
 <html>
 <head>
-<title>Map | MCHostPanel</title>
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
-<link rel="stylesheet" href="css/style.css">
-<meta name="author" content="Alan Hardman [phpizza.com]">
+	<title>Map | MCHostPanel</title>
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
+	<link rel="stylesheet" href="css/style.css">
+	<meta name="author" content="Alan Hardman [phpizza.com]">
+	<script src="js/jquery-1.7.2.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
 </head>
 <body>
 <?php require 'inc/top.php'; ?>
@@ -30,7 +32,7 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 					$config = spyc_load_file($user["home"] . "/plugins/dynmap/configuration.txt");
 					$port = $config["webserver-port"];
 			?>
-				<iframe style="width: 100%; height: 600px;" src="http://<?php echo $_SERVER['HTTP_HOST']; ?>:<?php echo $port; ?>/"></iframe>
+				<iframe id="map" style="width: 100%; height: 600px; border: none;" frameborder="0" src="http://<?php echo $_SERVER['HTTP_HOST']; ?>:<?php echo $port; ?>/"></iframe>
 			<?php } else { ?>
 				<p class="alert alert-danger">No dynmap configuration found.</p>
 			<?php } ?>
@@ -38,5 +40,18 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 		</div>
 	</div>
 </div>
+<script>
+	$(document).ready(function () {
+
+		// Fix sizing
+		$('#map').css('height', $(window).height() - 200 + 'px');
+
+		// Keep sizing correct
+		$(document).resize(function () {
+			$('#map').css('height', $(window).height() - 190 + 'px');
+		});
+
+	});
+</script>
 </body>
 </html>

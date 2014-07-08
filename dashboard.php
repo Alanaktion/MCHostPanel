@@ -45,20 +45,6 @@ if ($_SESSION['user']) {
 	<link rel="stylesheet" href="css/style.css">
 	<meta name="author" content="Alan Hardman [phpizza.com]">
 	<style type="text/css">
-		#cmd, #log {
-			background-color: #000;
-			color: #fff;
-			box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			width: 100%;
-		}
-		#cmd::selection, #log::selection {
-			background: rgba(255, 255, 255, .4);
-			color: #fff;
-		}
-		#log {
-			overflow-y: scroll;
-		}
 		#cmd {
 			height: 30px;
 		}

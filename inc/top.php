@@ -16,6 +16,6 @@
 	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "files.php" ? 'class="active"' : ""; ?>><a href="files.php">File Manager</a></li>
 	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "console.php" ? 'class="active"' : ""; ?>><a href="console.php">Console</a></li>
 	<?php if(is_file($user["home"] . "/plugins/dynmap/configuration.txt")) { ?>
-		<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "map.php" ? 'class="active"' : ""; ?>><a href="map.php">Map</a></li>
+		<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "map.php" ? 'class="active"' : ""; ?>><a href="map.php">Map <small class="badge">BETA</small></a></li>
 	<?php } ?>
 </ul>
