@@ -97,6 +97,16 @@ function mclogparse2($str) {
 		}
 
 		$line = implode("", $segarray);
+
+		// Format prefixes nicely
+		$line = preg_replace("/^(\[[0-9\:]+\] \[(Server thread|[A-Za-z0-9-])\/(ERROR|WARN|INFO)\]:)/", "<span class='gray'>$1</span>", $line);
+		$line = preg_replace(array("/(\[(Server thread|[A-Za-z0-9-])\/WARN\])/", "/(\[(Server thread|[A-Za-z0-9-])\/ERROR\])/"), array("<span class='gold'>$1</span>", "<span class='red'>$1</span>"), $line);
+
+		// Remove excessive "Server thread" prefix
+		$line = str_replace("[Server thread/", "[", $line);
+
+		// Remove remaining control bytes
+		$line = str_replace("\x1B", "", $line);
 	}
 
 	return implode("\n", $lines);
