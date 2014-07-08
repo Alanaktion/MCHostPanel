@@ -73,10 +73,10 @@ switch ($_POST['req']) {
 	case 'server_log':
 		if(is_file($user['home'] . "/logs/latest.log")) {
 			// 1.7 logs
-			echo mclogclean(file_backread($user['home'] . '/logs/latest.log', 50));
+			echo mclogparse2(file_backread($user['home'] . '/logs/latest.log', 50));
 		} elseif(is_file($user['home'] . "/server.log")) {
 			// 1.6 and earlier
-			echo mclogclean(file_backread($user['home'] . '/server.log', 50));
+			echo mclogparse2(file_backread($user['home'] . '/server.log', 50));
 		} else {
 			echo "No log file found.";
 		}
