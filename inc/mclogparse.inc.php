@@ -46,18 +46,17 @@ function mclogparse2($str) {
 		/* Remap Problem Characters */
 		$line = preg_replace("/</", "&lt;", $line);
 		$line = preg_replace("/>/", "</span>&gt;", $line);
-		$date = substr($line, 0, 10);
-		if ($date == $last) {
-			/* Remove Unrequired Formatting Codes */
-			$line = str_replace("[m", "", $line);
-			$line = str_replace("[21m", "", $line);
-			$line = str_replace("[3m", "", $line);
 
-			/* Split Log Line Into Sections to Using First Formatting Code Style */
-			$segarray = preg_split( '/(\[0|\[m)/', $line );
-			for ($i = 1; $i < count($segarray); ++$i) {
-				/* Do Replace to Add Styled Spans */
-				if (preg_match('/;\d{2};\d+m/', $segarray[$i])) {
+		/* Remove Unrequired Formatting Codes */
+		$line = str_replace("[m", "", $line);
+		$line = str_replace("[21m", "", $line);
+		$line = str_replace("[3m", "", $line);
+
+		/* Split Log Line Into Sections to Using First Formatting Code Style */
+		$segarray = preg_split( '/(\[0|\[m)/', $line);
+		for ($i = 1; $i < count($segarray); ++$i) {
+			/* Do Replace to Add Styled Spans */
+			if (preg_match('/;\d{2};\d+m/', $segarray[$i])) {
 				$segarray[$i] = preg_replace("/;30/", "<span class='black", $segarray[$i]);
 				$segarray[$i] = preg_replace("/;31/", "<span class='red", $segarray[$i]);
 				$segarray[$i] = preg_replace("/;32/", "<span class='green", $segarray[$i]);
@@ -111,4 +110,3 @@ function mclogclean($str) {
 	//output interpreted HTML as plain text
 	return htmlspecialchars($str);
 }
-
