@@ -67,7 +67,8 @@ transition: color .1s ease;
 .nav >li >a:hover{background-color:#EEE}
 
 #cmd, #log {
-	background-color: #111;
+	font-family: 'Source Code Pro', monospace;
+	background-color: #33342c;
 	color: #fff;
 	box-sizing: border-box;
 	-moz-box-sizing: border-box;
@@ -81,13 +82,13 @@ transition: color .1s ease;
 	overflow-y: scroll;
 }
 
-#log .green{color: lime;}
-#log .red{color: red;}
-#log .purple{color: plum;}
-#log .black{color: whitesmoke;}
-#log .blue{color: blue;}
-#log .gold{color: gold;}
-#log .cyan{color: cyan;}
-#log .aqua{color: aqua;}
-#log .gray{color: #ccc;}
-#log .bold{font-weight: bold;}
+#log .green  {color: #b1e33f;}
+#log .red    {color: #f94385;}
+#log .purple {color: #bc99fd;}
+#log .black  {color: #878271;}
+#log .blue   {color: #74e0f1;}
+#log .gold   {color: #fba52b;}
+#log .cyan   {color: #74e0f1;}
+#log .aqua   {color: #74e0f1;}
+#log .gray   {color: #878271;}
+#log .bold {font-weight: bold;}
