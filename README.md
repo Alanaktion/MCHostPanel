@@ -7,15 +7,16 @@ NOTE: Some features of this project including auto-updating and directory deleti
 
 ### Requirements
 
-- PHP 5 with GD library
-- Java 7
+- PHP 5 with GD library (GD only used for player faces)
+- Java 6/7 Headless (OpenJDK JRE works great)
 
 ### Installation
 
-- Upload all of the files to a web-accessible directory on your server.
+- Upload all of the files to a web-accessible directory on your server
+- Copy data/config-sample.php to data/config.php
 - Edit data/config.php and set KT_LOCAL_IP to your server's public IP address
-- Go to install.php in your browser and set up an administrator user.
-- Delete install.php
+- Go to install.php in your browser and set up an administrator user
+- **Delete install.php**
 - Add any Minecraft server .jar file to your home directory, and rename it "craftbukkit.jar"
 - Ensure the web server user has write access to the data/ directory
 
