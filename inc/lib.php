@@ -351,7 +351,7 @@ function user_add($user,$pass,$role,$home,$ram=512,$port=25565) {
 	);
 	
 	// Write to file
-	file_put_contents('data/users/'.strtolower($user['user']),json_encode($user));
+	file_put_contents('data/users/'.strtolower($user['user']) . '.json',json_encode($user));
 }
 
 // Delete a user
