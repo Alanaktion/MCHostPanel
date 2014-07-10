@@ -43,32 +43,11 @@ if ($_SESSION['user']) {
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+	<meta name="author" content="Alan Hardman [phpizza.com]">
 	<style type="text/css">
-		#cmd, #log {
-			background-color: #000;
-			color: #fff;
-		}
-
-		#cmd, #log {
-			box-sizing: border-box;
-			-moz-box-sizing: border-box;
-			width: 100%;
-		}
-
-		#cmd::selection, #log::selection {
-			background: rgba(255, 255, 255, .4);
-			color: #fff;
-		}
-
-		#log {
-			overflow-y: scroll;
-		}
-
 		#cmd {
 			height: 30px;
 		}
-
 		form {
 			margin: 0;
 		}
@@ -93,7 +72,7 @@ if ($_SESSION['user']) {
 				}
 			}, 'json');
 			if (!once)
-				window.setTimeout('updateStatus();', 5000);
+				window.setTimeout(updateStatus, 5000);
 		}
 		function updatePlayers() {
 			$.post('ajax.php', {
@@ -103,10 +82,10 @@ if ($_SESSION['user']) {
 					$('#lbl-players').text('Unknown').attr('title', 'Enable Query in server.properties to see player information').tooltip();
 				} else {
 					try{
-						console.log(data)
+						console.log(data);
 					} catch(ex) {}
 
-					if(data.players == false) {
+					if(data.players === false) {
 						$('#lbl-players').text(0 + '/' + data.info.MaxPlayers);
 					} else {
 						$('#lbl-players').text(data.players.length + '/' + data.info.MaxPlayers);
@@ -150,7 +129,7 @@ if ($_SESSION['user']) {
 				} else {
 					$('#log').html(data);
 				}
-				window.setTimeout('refreshLog();', 3000);
+				window.setTimeout(refreshLog, 3000);
 			});
 		}
 		function refreshLogOnce() {
@@ -198,7 +177,7 @@ if ($_SESSION['user']) {
 				req: 'server_log'
 			}, function (data) {
 				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
-				window.setTimeout('refreshLog();', 3000);
+				window.setTimeout(refreshLog, 3000);
 			});
 
 			// Keep sizing correct
@@ -210,11 +189,6 @@ if ($_SESSION['user']) {
 </head>
 <body>
 <?php require 'inc/top.php'; ?>
-<ul class="nav nav-tabs" id="myTab">
-	<li class="active"><a href="dashboard.php">Dashboard</a></li>
-	<li><a href="files.php">File Manager</a></li>
-	<li><a href="console.php">Console</a></li>
-</ul>
 <div class="tab-content">
 	<div class="tab-pane active">
 		<?php if ($user['ram']) { ?>

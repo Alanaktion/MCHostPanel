@@ -11,7 +11,7 @@ a,a:hover{color:#378110;}
 @media (max-width: 979px) {
 	body {padding-top: 0;}
 	.navbar-inverse .navbar-inner {
-		background-image: none;	
+		background-image: none;
 	}
 }
 .brand {
@@ -65,3 +65,30 @@ transition: color .1s ease;
 .tab-content{background:#fff;padding:20px}
 .nav-tabs >li >a:hover{border-color:#EEE #EEE #DDD}
 .nav >li >a:hover{background-color:#EEE}
+
+#cmd, #log {
+	font-family: 'Source Code Pro', monospace;
+	background-color: #33342c;
+	color: #fff;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+}
+#cmd::selection, #log::selection {
+	background: rgba(255, 255, 255, .4);
+	color: #fff;
+}
+#log {
+	overflow-y: scroll;
+}
+
+#log .green  {color: #b1e33f;}
+#log .red    {color: #f94385;}
+#log .purple {color: #bc99fd;}
+#log .black  {color: #878271;}
+#log .blue   {color: #74e0f1;}
+#log .gold   {color: #fba52b;}
+#log .cyan   {color: #74e0f1;}
+#log .aqua   {color: #74e0f1;}
+#log .gray   {color: #878271;}
+#log .bold {font-weight: bold;}
