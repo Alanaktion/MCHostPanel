@@ -372,16 +372,22 @@ function user_info($user) {
 		return false;
 }
 
-// List users
+
 function user_list() {
+
+//only display files with this extention
+$allowed_ext = array('json');
+
 	$h = opendir('data/users/');
 	$users = array();
-	while(($f = readdir($h)) !== false)
-		if($f != '.' && $f != '..')
-			$users[] = $f;
-	closedir($h);
+	while (($f = readdir($h)) !== false)
+    	if ($f != "." && $f != ".." &&
+        in_array(pathinfo($f, PATHINFO_EXTENSION), $allowed_ext))
+     		$users[] = $f;
+     closedir($h);
 	return $users;
-}
+    }
+
 
 /////////////////////////
 // FILTERING FUNCTIONS //
