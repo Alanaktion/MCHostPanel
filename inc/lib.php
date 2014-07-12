@@ -381,7 +381,7 @@ function user_list() {
 	$users = array();
 	while(($f = readdir($h)) !== false)
 		if($f != '.' && $f != '..' && preg_match("/\.json$/", $f))
-			$users[] = $f;
+			$users[] = preg_replace("/\.json$/", "", $f);
 	closedir($h);
 	return $users;
 }
