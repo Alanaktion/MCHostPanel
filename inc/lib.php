@@ -368,7 +368,7 @@ function user_delete($user) {
 
 // Get user data
 function user_info($user) {
-	if(is_file('data/users/' . strtolower(clean_alphanum($user)))) {
+	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
 		return json_decode(file_get_contents('data/users/' . strtolower(clean_alphanum($user) . '.json')), true);
 	} else {
 		return false;
