@@ -105,46 +105,46 @@ function getsize($file) {
 	return $size;
 }
 
-function __file_backread_helper(&$haystack,$needle,$x) { 
+function __file_backread_helper(&$haystack,$needle,$x) {
     $pos=0;$cnt=0;
-    while($cnt < $x && ($pos=strpos($haystack,$needle,$pos))!==false){$pos++;$cnt++;}  
+    while($cnt < $x && ($pos=strpos($haystack,$needle,$pos))!==false){$pos++;$cnt++;}
     return $pos==false ? false:substr($haystack,$pos,strlen($haystack));
-} 
+}
 
-function file_backread($file,$lines,&$fsize=0){ 
-    $f=fopen($file,'r'); 
-    if(!$f)return Array(); 
-    
-    
-    $splits=$lines*50; 
-    if($splits>10000)$splits=10000; 
+function file_backread($file,$lines,&$fsize=0){
+    $f=fopen($file,'r');
+    if(!$f)return Array();
 
-    $fsize=filesize($file); 
-    $pos=$fsize; 
-    
-    $buff1=Array(); 
-    $cnt=0; 
 
-    while($pos) 
-    { 
-        $pos=$pos-$splits; 
-        
-        if($pos<0){ $splits+=$pos; $pos=0;} 
+    $splits=$lines*50;
+    if($splits>10000)$splits=10000;
 
-        fseek($f,$pos); 
-        $buff=fread($f,$splits); 
-        if(!$buff)break; 
-        
-        $lines -= substr_count($buff, "\n"); 
+    $fsize=filesize($file);
+    $pos=$fsize;
 
-        if($lines <= 0) { 
-            $buff1[] = __file_backread_helper($buff,"\n",abs($lines)+1); 
-            break; 
-        } 
-        $buff1[] = $buff; 
-    } 
+    $buff1=Array();
+    $cnt=0;
 
-    return str_replace("\r",'',implode('',array_reverse($buff1))); 
+    while($pos)
+    {
+        $pos=$pos-$splits;
+
+        if($pos<0){ $splits+=$pos; $pos=0;}
+
+        fseek($f,$pos);
+        $buff=fread($f,$splits);
+        if(!$buff)break;
+
+        $lines -= substr_count($buff, "\n");
+
+        if($lines <= 0) {
+            $buff1[] = __file_backread_helper($buff,"\n",abs($lines)+1);
+            break;
+        }
+        $buff1[] = $buff;
+    }
+
+    return str_replace("\r",'',implode('',array_reverse($buff1)));
 }
 
 function file_download($url,$path) {
@@ -157,15 +157,15 @@ function file_download($url,$path) {
 		else
 			return false;
 	}
-	
+
 	if($file)
 		fclose($file);
 	else
 		return false;
-	
+
 	if($newf)
 		fclose($newf);
-	
+
 	return $path;
 }
 
@@ -223,18 +223,18 @@ function server_start($name) {
 
 	// Get user details
 	$user = user_info($name);
-	
+
 	// Make sure server isn't already running
 	if(server_running($user['user']))
 		return false;
-	
+
 	// Check that server has a .jar
 	if(is_file($user['home'].'/craftbukkit.jar')) {
-		
+
 		// Verify server.properties (Prevent user from modifying port)
 		if(is_file($user['home'].'/server.properties')) {
 			$prop = file($user['home'].'/server.properties',FILE_IGNORE_NEW_LINES|FILE_SKIP_EMPTY_LINES);
-			
+
 			// Remove any port setting
 			foreach($prop as $i=>$p) {
 				if(strpos($p,'server-port')!==false) {
@@ -242,13 +242,13 @@ function server_start($name) {
 					continue;
 				}
 			}
-			
+
 			// Add user's port
 			$prop[] = 'server-port='.intval($user['port']);
-			
+
 			// Save properties file
 			file_put_contents($user['home'].'/server.properties',implode("\n",$prop));
-			
+
 		} else {
 			// File doesn't exist, use template from ./serverbase
 			file_put_contents(
@@ -260,7 +260,7 @@ function server_start($name) {
 				)
 			);
 		}
-		
+
 		// Launch server process in a detached GNU Screen
 		shell_exec(
 			'cd '.escapeshellarg($user['home']).'; '. // Change to server directory
@@ -271,7 +271,7 @@ function server_start($name) {
 				$user['ram']  // Maximum RAM
 			)
 		);
-		
+
 	}
 }
 
@@ -289,17 +289,17 @@ function server_cmd($name,$cmd) {
 // Safely shut down a server
 function server_stop($name) {
 	shell_exec(
-		
+
 		// "stop" command
 		sprintf(
 			KT_SCREEN_CMD_EXEC, // Base command
 			KT_SCREEN_NAME_PREFIX.$name, // Screen Name
 			'stop' // Server command
 		).';'.
-		
+
 		// wait 5 seconds
 		'sleep 5;'.
-		
+
 		// kill process
 		sprintf(
 			KT_SCREEN_CMD_KILL, // Base command
@@ -326,7 +326,7 @@ function server_kill_all() {
 
 // Check if a server is running
 function server_running($name) {
-	return (bool) strpos(`screen -ls`,KT_SCREEN_NAME_PREFIX.$name);
+	return !!strpos(`screen -ls`, KT_SCREEN_NAME_PREFIX . $name);
 }
 
 ////////////////////
@@ -335,41 +335,44 @@ function server_running($name) {
 
 // Add a new user
 function user_add($user,$pass,$role,$home,$ram=512,$port=25565) {
-	
+
 	// Prevent overwriting an existing user
-	if(is_file('data/users/'.strtolower(clean_alphanum($user))))
+	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
 		return false;
-	
+	}
+
 	// Create user array
 	$user = array(
 		'user' => clean_alphanum($user),
 		'pass' => bcrypt($pass),
 		'role' => $role,
-		'home' => rtrim(strtr($home,'\\','/'),'/'),
+		'home' => rtrim(strtr($home, "\\", '/'), '/'),
 		'ram'  => intval($ram),
 		'port' => intval($port)
 	);
-	
+
 	// Write to file
-	file_put_contents('data/users/'.strtolower($user['user']),json_encode($user));
+	file_put_contents('data/users/' . strtolower(clean_alphanum($user['user'])) . '.json', json_encode($user));
 }
 
 // Delete a user
 function user_delete($user) {
 	// Delete user file if it exists
-	if(is_file('data/users/'.strtolower(clean_alphanum($user)))) {
-		unlink('data/users/'.strtolower(clean_alphanum($user)));
+	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
+		unlink('data/users/' . strtolower(clean_alphanum($user)) . '.json');
 		return true;
-	} else
+	} else {
 		return false;
+	}
 }
 
 // Get user data
 function user_info($user) {
-	if(is_file('data/users/'.strtolower(clean_alphanum($user))))
-		return json_decode(file_get_contents('data/users/'.strtolower(clean_alphanum($user))),true);
-	else
+	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
+		return json_decode(file_get_contents('data/users/' . strtolower(clean_alphanum($user) . '.json')), true);
+	} else {
 		return false;
+	}
 }
 
 // List users
@@ -377,8 +380,8 @@ function user_list() {
 	$h = opendir('data/users/');
 	$users = array();
 	while(($f = readdir($h)) !== false)
-		if($f != '.' && $f != '..')
-			$users[] = $f;
+		if($f != '.' && $f != '..' && preg_match("/\.json$/", $f))
+			$users[] = preg_replace("/\.json$/", "", $f);
 	closedir($h);
 	return $users;
 }
