@@ -1,6 +1,6 @@
 <?php
 /**
- * copywrite James Pollock2014
+ * copywrite www.Jamesplanet.net 2014
      */
     class MinecraftProfile{
         private $username;

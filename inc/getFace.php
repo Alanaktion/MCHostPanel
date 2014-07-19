@@ -1,5 +1,5 @@
 <?php
-include ($_SERVER["DOCUMENT_ROOT"] . '/test/src/getminecraftprofile.php' )?>
+include ('getminecraftprofile.php' )?>
 <?php 
 $profile = ProfileUtils::getProfile($_GET['username']);
 $result = $profile->getFace();
