@@ -71,6 +71,10 @@ switch ($_POST['req']) {
 		echo json_encode(server_running($user['user']));
 		break;
 	case 'server_log':
+		/*if($files = glob($user['home'] . "screenlog.?*")) {
+			// Prefer GNU screen log
+			echo mclogparse2(file_backread($user['home']));
+		} else*/
 		if(is_file($user['home'] . "/logs/latest.log")) {
 			// 1.7 logs
 			echo mclogparse2(file_backread($user['home'] . '/logs/latest.log', 64));

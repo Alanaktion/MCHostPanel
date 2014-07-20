@@ -1,11 +1,40 @@
-<?php // Copyright (c) Alan Hardman 2013
+<?php
+/**
+ * Copyright (c) Alan Hardman 2013
+ * @author Alan Hardman <alan@phpizza.com>
+ *
+ * Note: I used ASCII art text with the Colossal font
+ * to take advantage of Sublime Text's amazing minimap.
+ * This groups sections in a way that allows me to see
+ * where any given code section is at a glance.
+ *
+ * ...or I could just use Ctrl+R. Sublime Text rocks.
+ */
 
 require_once 'data/config.php';
 require_once 'inc/mclogparse.inc.php';
 
-//////////////////////////
-// FILESYSTEM FUNCTIONS //
-//////////////////////////
+/*
+8888888888 d8b 888                                     888
+888        Y8P 888                                     888
+888            888                                     888
+8888888    888 888  .d88b.  .d8888b  888  888 .d8888b  888888 .d88b.  88888b.d88b.
+888        888 888 d8P  Y8b 88K      888  888 88K      888   d8P  Y8b 888 "888 "88b
+888        888 888 88888888 "Y8888b. 888  888 "Y8888b. 888   88888888 888  888  888
+888        888 888 Y8b.          X88 Y88b 888      X88 Y88b. Y8b.     888  888  888
+888        888 888  "Y8888   88888P'  "Y88888  88888P'  "Y888 "Y8888  888  888  888
+                                          888
+                                     Y8b d88P
+                                      "Y88P"
+*/
+
+/**
+ * [file_rename description]
+ * @param  [type] $path    [description]
+ * @param  [type] $newname [description]
+ * @param  [type] $home    [description]
+ * @return [type]          [description]
+ */
 function file_rename($path,$newname,$home) {
 	return rename($home.$path,$home.rtrim($path,basename($path)).$newname);
 }
@@ -28,6 +57,11 @@ function download($path,$home,$force = true) {
 	}
 }
 
+/**
+ * Get a file's mime type by file name
+ * @param  string $filename
+ * @return string
+ */
 function mimetype($filename) {
 	$mime_types = array(
 		'txt' => 'text/plain',
@@ -90,8 +124,12 @@ function mimetype($filename) {
 		return 'application/octet-stream';
 }
 
-// Get a file size using native methods
-// This allows file sizes greater than 4GB to work properly on a 32-bit environment
+/**
+ * Get a file size using native methods when possible
+ * This allows file sizes greater than 4GB to work properly on a 32-bit environment
+ * @param  string $file
+ * @return int
+ */
 function getsize($file) {
 	$size = filesize($file);
 	if($size < 0)
@@ -105,12 +143,26 @@ function getsize($file) {
 	return $size;
 }
 
+/**
+ * Helper for file_backread function
+ * @param  string $haystack
+ * @param  string $needle
+ * @param  int    $x
+ * @return string|bool
+ */
 function __file_backread_helper(&$haystack,$needle,$x) {
     $pos=0;$cnt=0;
     while($cnt < $x && ($pos=strpos($haystack,$needle,$pos))!==false){$pos++;$cnt++;}
     return $pos==false ? false:substr($haystack,$pos,strlen($haystack));
 }
 
+/**
+ * Read n lines from the end of a file
+ * @param  string $file
+ * @param  int    $lines
+ * @param  int    $fsize
+ * @return string
+ */
 function file_backread($file,$lines,&$fsize=0){
     $f=fopen($file,'r');
     if(!$f)return Array();
@@ -147,6 +199,12 @@ function file_backread($file,$lines,&$fsize=0){
     return str_replace("\r",'',implode('',array_reverse($buff1)));
 }
 
+/**
+ * Force download of a file to the browser
+ * @param  string $url
+ * @param  string $path
+ * @return string|bool
+ */
 function file_download($url,$path) {
 	$file = fopen($url,'rb');
 	if($file) {
@@ -169,7 +227,11 @@ function file_download($url,$path) {
 	return $path;
 }
 
-// Delete a folder and it's contents (stack algorithm, faster than a recursive function)
+/**
+ * Delete a folder and it's contents (stack algorithm, faster than a recursive function)
+ * @param  string $dirname
+ * @return bool
+ */
 function rmdirr($dirname) {
 	// Sanity check
 	if(!file_exists($dirname))
@@ -214,11 +276,21 @@ function rmdirr($dirname) {
 	return true;
 }
 
-//////////////////////
-// SERVER FUNCTIONS //
-//////////////////////
+/*
+ .d8888b.
+d88P  Y88b
+Y88b.
+ "Y888b.    .d88b.  888d888 888  888  .d88b.  888d888 .d8888b
+    "Y88b. d8P  Y8b 888P"   888  888 d8P  Y8b 888P"   88K
+      "888 88888888 888     Y88  88P 88888888 888     "Y8888b.
+Y88b  d88P Y8b.     888      Y8bd8P  Y8b.     888          X88
+ "Y8888P"   "Y8888  888       Y88P    "Y8888  888      88888P'
+*/
 
-// Start a server with a given username
+/**
+ * Start a server with a given username
+ * @param string $name
+ */
 function server_start($name) {
 
 	// Get user details
@@ -275,7 +347,11 @@ function server_start($name) {
 	}
 }
 
-// Pass a command to a running server
+/**
+ * Pass a command to a running server
+ * @param string $name
+ * @param string $cmd
+ */
 function server_cmd($name,$cmd) {
 	shell_exec(
 		sprintf(
@@ -286,7 +362,10 @@ function server_cmd($name,$cmd) {
 	);
 }
 
-// Safely shut down a server
+/**
+ * Safely shut down a server
+ * @param  string $name
+ */
 function server_stop($name) {
 	shell_exec(
 
@@ -297,7 +376,7 @@ function server_stop($name) {
 			'stop' // Server command
 		).';'.
 
-		// wait 5 seconds
+		// wait 5 seconds to ensure server has saved
 		'sleep 5;'.
 
 		// kill process
@@ -308,7 +387,10 @@ function server_stop($name) {
 	);
 }
 
-// Immediately kill a server with a given username (does not save anything!)
+/**
+ * Immediately kill a server with a given username (does not save anything!)
+ * @param  string $name
+ */
 function server_kill($name) {
 	$user = user_info($name);
 	shell_exec(
@@ -319,19 +401,32 @@ function server_kill($name) {
 	);
 }
 
-// Kill ALL RUNNING GNU-SCREENS (under the web server user)
+/**
+ * Kill ALL RUNNING GNU-SCREENS (under the web server user)
+ */
 function server_kill_all() {
 	shell_exec(KT_SCREEN_CMD_KILLALL);
 }
 
-// Check if a server is running
+/**
+ * Check if a server is running
+ * @param  string $name
+ * @return bool
+ */
 function server_running($name) {
 	return !!strpos(`screen -ls`, KT_SCREEN_NAME_PREFIX . $name);
 }
 
-////////////////////
-// USER FUNCTIONS //
-////////////////////
+/*
+888     888
+888     888
+888     888
+888     888 .d8888b   .d88b.  888d888 .d8888b
+888     888 88K      d8P  Y8b 888P"   88K
+888     888 "Y8888b. 88888888 888     "Y8888b.
+Y88b. .d88P      X88 Y8b.     888          X88
+ "Y88888P"   88888P'  "Y8888  888      88888P'
+*/
 
 // Add a new user
 function user_add($user,$pass,$role,$home,$ram=512,$port=25565) {
@@ -386,9 +481,19 @@ function user_list() {
 	return $users;
 }
 
-/////////////////////////
-// FILTERING FUNCTIONS //
-/////////////////////////
+/*
+8888888888 d8b 888 888                    d8b
+888        Y8P 888 888                    Y8P
+888            888 888
+8888888    888 888 888888 .d88b.  888d888 888 88888b.   .d88b.
+888        888 888 888   d8P  Y8b 888P"   888 888 "88b d88P"88b
+888        888 888 888   88888888 888     888 888  888 888  888
+888        888 888 Y88b. Y8b.     888     888 888  888 Y88b 888
+888        888 888  "Y888 "Y8888  888     888 888  888  "Y88888
+                                                            888
+                                                       Y8b d88P
+                                                        "Y88P"
+*/
 
 // Remove non-alphanumeric characters from a string
 function clean_alphanum($s) {
@@ -411,9 +516,19 @@ function check_email($email) {
 }
 
 
-////////////////////////////
-// CRYPTOGRAPHY FUNCTIONS //
-////////////////////////////
+/*
+ .d8888b.                            888                                              888
+d88P  Y88b                           888                                              888
+888    888                           888                                              888
+888        888d888 888  888 88888b.  888888 .d88b.   .d88b.  888d888 8888b.  88888b.  88888b.  888  888
+888        888P"   888  888 888 "88b 888   d88""88b d88P"88b 888P"      "88b 888 "88b 888 "88b 888  888
+888    888 888     888  888 888  888 888   888  888 888  888 888    .d888888 888  888 888  888 888  888
+Y88b  d88P 888     Y88b 888 888 d88P Y88b. Y88..88P Y88b 888 888    888  888 888 d88P 888  888 Y88b 888
+ "Y8888P"  888      "Y88888 88888P"   "Y888 "Y88P"   "Y88888 888    "Y888888 88888P"  888  888  "Y88888
+                        888 888                          888                 888                    888
+                   Y8b d88P 888                     Y8b d88P                 888               Y8b d88P
+                    "Y88P"  888                      "Y88P"                  888                "Y88P"
+*/
 
 // Generate a Base-64 salt string
 function base64_salt($len = 22) {
