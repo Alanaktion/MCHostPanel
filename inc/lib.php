@@ -380,6 +380,12 @@ function user_info($user) {
 	}
 }
 
+//update user data
+function user_modify($user,$pass,$role,$home,$ram,$port)
+{
+echo ($_POST['action']);
+}
+
 // List users
 function user_list() {
 	$h = opendir('data/users/');

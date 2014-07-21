@@ -1,7 +1,13 @@
 <?php
 require_once 'inc/lib.php';
 
-?><!doctype html>
+if ($_POST['action'] == 'user-update')
+{
+	user_modify($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
+	echo('hello world');
+}
+?>
+<!doctype html>
 <html>
 <head>
 	<title>User Profile | MCHostPanel</title>
@@ -21,49 +27,62 @@ require_once 'inc/lib.php';
 			<div class="row-fluid">
 				<legend>User Profile</legend>
 					<div id="profileArea">
+					<form action="userProfile.php" method="post" autocomplete="off">
+					<input type="hidden" name="action" value="user-update">
 						<div id="nameArea">	
-							<h2>Username: <?php
+							<h3>Username: 
+							<input type="hidden" name="action" value=<?php echo $user['user'];?>>
+							<?php
 							echo $user['user'];
 			 				?>
-			 				</h2>
+
+			 				</h3>
 			 			</div>
 			 			
 			 			</br>
 			 	
-			 			<div id="rollArea">	
-							<h2>Role: <?php
+			 			<div id="roleArea">	
+							<h3>Role:
+								<input type="hidden" name="action" value=<?php echo $user['role'];?>>
+								<?php
 							echo $user['role'];
 			 				?>
-			 				</h2>
+			 				</h3>
+			 				
 			 			</div>
 			 			
 			 			</br>
 			 			
 			 			<div id="homeArea">	
-							<h2>Home Directory: <?php
-							echo $user['home'];
-			 				?>
-			 				</h2>
+							<h3>Home Directory:</h3> 
+								<div class="controls">
+									<input class="span10" type="text" name="dir" id="dir" value=<?php echo $user['home'];?>>
+								</div>
+			 				
 			 			</div>
 			 			
 			 			</br>
 			 			
 			 			<div id="ramArea">	
-							<h2>RAM Allocated: <?php
-							echo $user['ram'];
-			 				?>
-			 				</h2>
+							<h3>RAM Allocated:</h3>
+								<div class="controls">
+									<input class="span10" type="text" name="ram" id="ram" value=<?php echo $user['ram'];?>>
+								</div>
 			 			</div>
 			 			
 			 			</br>
 			 			
 			 			<div id="portArea">	
-							<h2>Port: <?php
-							echo $user['port'];
-			 				?>
-			 				</h2>
-			 		</div>
+							<h2>Port:</h2>
+			 					<div class="controls">
+									<input class="span3" type="number" name="port" id="port" value=<?php echo $user['port'];?>>
+								</div>
+			 			</div>
+			 			
+			 		</br></br></br>
 			 		
+			 		<button type="submit" class="btn btn-primary">Save Changes</button>
+			 		</form>
 			 	</div>	
 			</div>
 		</div>
