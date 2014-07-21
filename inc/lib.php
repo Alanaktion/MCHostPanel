@@ -448,6 +448,11 @@ function user_add($user,$pass,$role,$home,$ram=512,$port=25565) {
 
 	// Write to file
 	file_put_contents('data/users/' . strtolower(clean_alphanum($user['user'])) . '.json', json_encode($user));
+	
+	//check users home directory exists. if it doesn't we create it.
+	if (!file_exists($_POST['dir'])) {
+    mkdir($_POST['dir'], 0777, true);
+	}
 }
 
 // Delete a user
@@ -468,6 +473,12 @@ function user_info($user) {
 	} else {
 		return false;
 	}
+}
+
+//update user data
+function user_modify($user,$pass,$role,$home,$ram,$port)
+{
+echo ($_POST['action']);
 }
 
 // List users

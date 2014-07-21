@@ -94,7 +94,7 @@ if ($_SESSION['user']) {
 					}
 					$.each(data.players, function (i, val) {
 						console.log(val);
-						$('#lbl-players').append('<img src=' +  '<?php echo('/getface.php?username=') ?>' + val + '&amp;size=24' + '/>');
+						$('#lbl-players').append('<img src=' +  '<?php echo('/inc/getface.php?username=') ?>' + val + '&amp;size=24' + '/>');
 						$('#lbl-players').append(" " + val);
 						$('#lbl-players').append('<br/><br/>');
 					});
