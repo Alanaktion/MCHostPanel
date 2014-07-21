@@ -481,10 +481,25 @@ function user_modify($user,$pass,$role,$home,$ram,$port)
 	// check user existence and blank out the file for rewriting if it exists
 	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
 		file_put_contents('data/users/' . strtolower(clean_alphanum($user)) . '.json', "");
+		
+		// Create user array
+	$user = array(
+		'user' => clean_alphanum($_POST['user']),
+		'pass' => bcrypt($pass),
+		'role' => $_POST['role'],
+		'home' => $_POST['dir'],
+		'ram'  => intval($_POST['ram']),
+		'port' => intval($_POST['port'])
+	);
+	
+	// Write to file
+	file_put_contents('data/users/' . strtolower(clean_alphanum($user['user'])) . '.json', json_encode($user));
 		return true;
 	} else {
 		return false;
 	}
+	
+
 }
 
 // List users

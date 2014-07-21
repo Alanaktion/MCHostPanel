@@ -1,10 +1,8 @@
 <?php
 require_once 'inc/lib.php';
-
 if ($_POST['action'] == 'user-update')
 {
-	user_modify($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
-	echo('hello world');
+user_modify($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
 }
 ?>
 <!doctype html>
@@ -27,11 +25,11 @@ if ($_POST['action'] == 'user-update')
 			<div class="row-fluid">
 				<legend>User Profile</legend>
 					<div id="profileArea">
-					<form action="userProfile.php" method="post" autocomplete="off">
+					<form action="userProfile.php" method="post">
 					<input type="hidden" name="action" value="user-update">
 						<div id="nameArea">	
 							<h3>Username: 
-							<input type="hidden" name="action" value=<?php echo $user['user'];?>>
+							<input type="hidden" name="user" value=<?php echo $user['user'];?>>
 							<?php
 							echo $user['user'];
 			 				?>
@@ -43,7 +41,7 @@ if ($_POST['action'] == 'user-update')
 			 	
 			 			<div id="roleArea">	
 							<h3>Role:
-								<input type="hidden" name="action" value=<?php echo $user['role'];?>>
+								<input type="hidden" name="role" value=<?php echo $user['role'];?>>
 								<?php
 							echo $user['role'];
 			 				?>
@@ -54,11 +52,10 @@ if ($_POST['action'] == 'user-update')
 			 			</br>
 			 			
 			 			<div id="homeArea">	
-							<h3>Home Directory:</h3> 
-								<div class="controls">
-									<input class="span10" type="text" name="dir" id="dir" value=<?php echo $user['home'];?>>
-								</div>
-			 				
+							<h3>Home Directory:
+									<input type="hidden" name="dir" id="dir" value=<?php echo $user['home'];?>>
+									<?php echo $user['home'];?>
+							</h3> 
 			 			</div>
 			 			
 			 			</br>
@@ -83,6 +80,7 @@ if ($_POST['action'] == 'user-update')
 			 		
 			 		<button type="submit" class="btn btn-primary">Save Changes</button>
 			 		</form>
+		
 			 	</div>	
 			</div>
 		</div>
