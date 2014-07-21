@@ -478,7 +478,13 @@ function user_info($user) {
 //update user data
 function user_modify($user,$pass,$role,$home,$ram,$port)
 {
-echo ($_POST['action']);
+	// check user existence and blank out the file for rewriting if it exists
+	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
+		file_put_contents('data/users/' . strtolower(clean_alphanum($user)) . '.json', "");
+		return true;
+	} else {
+		return false;
+	}
 }
 
 // List users
