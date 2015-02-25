@@ -114,7 +114,7 @@ $(document).ready(function () {
 	// Add rename button handler
 	$('#btn-rename').click(function () {
 		newname = prompt('Enter a new name for the file:', basename($('#filelist li.active a').attr('href')));
-		if (rename) {
+		if (newname) {
 			$.post('ajax.php', {
 				req: 'rename',
 				path: $('#filelist li.active a').attr('href'),
@@ -146,7 +146,7 @@ $(document).ready(function () {
 	$('button.ht').tooltip();
 
 	// Load requested directory
-	loaddir('<?php echo $_GET['dir'] ? $_GET['dir'] : '/'; ?>');
+	loaddir('<?php echo $_GET["dir"] ? $_GET["dir"] : '/'; ?>');
 
 });
 
