@@ -1,4 +1,5 @@
 <?php
+require 'vendor/autoload.php';
 require_once 'inc/lib.php';
 
 session_start();
