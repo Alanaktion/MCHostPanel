@@ -67,7 +67,7 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 					req: 'server_cmd',
 					cmd: $('#cmd').val()
 				}, function () {
-					$('#cmd').val('').prop('disabled', false);
+					$('#cmd').val('').prop('disabled', false).focus();
 					refreshLogOnce();
 				});
 				$('#cmd').prop('disabled', true);
