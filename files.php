@@ -2,7 +2,7 @@
 require_once 'inc/lib.php';
 
 session_start();
-if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
+if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
@@ -16,7 +16,7 @@ if (!$_SESSION['user'] || !$user = user_info($_SESSION['user'])) {
 <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 <link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 <link rel="stylesheet" href="css/style.css">
-<meta name="author" content="Alan Hardman [phpizza.com]">
+<meta name="author" content="Alan Hardman <alan@phpizza.com>">
 <script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script type="text/javascript">

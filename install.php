@@ -1,7 +1,7 @@
 <?php
 require_once 'inc/lib.php';
 
-if ($_POST['user']) {
+if (!empty($_POST['user'])) {
 	session_start();
 	user_add($_POST['user'], $_POST['pass'], 'admin', $_POST['dir'], $_POST['ram'], $_POST['port']);
 	$_SESSION['user'] = clean_alphanum($_POST['user']);
@@ -13,10 +13,10 @@ if ($_POST['user']) {
 	<title>Install MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 </head>
 <body>
-<?php if ($_POST['user']) { ?>
+<?php if (!empty($_POST['user'])) { ?>
 	<div class="modal">
 		<div class="modal-header">
 			<h3>Install MCHostPanel</h3>

@@ -16,7 +16,7 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman [phpizza.com]">
+	<meta name="author" content="Alan Hardman <alan@phpizza.com>">
 	<style type="text/css">
 		form {
 			margin: 0;
@@ -100,7 +100,7 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 <?php require 'inc/top.php'; ?>
 <div class="tab-content">
 	<div class="tab-pane active">
-		<?php if ($user['ram']) { ?>
+		<?php if (!empty($user['ram'])) { ?>
 			<pre id="log" class="well well-small"></pre>
 			<form id="frm-cmd">
 				<input type="text" id="cmd" name="cmd" maxlength="250" autofocus>

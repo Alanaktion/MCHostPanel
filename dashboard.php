@@ -3,7 +3,7 @@ require_once 'inc/lib.php';
 
 session_start();
 
-if ($_SESSION['user']) {
+if (!empty($_SESSION['user'])) {
 
 	if (!$user = user_info($_SESSION['user'])) {
 		// User does not exist, redirect to login page
@@ -11,7 +11,7 @@ if ($_SESSION['user']) {
 		exit('Not Authorized');
 	}
 
-} elseif ($_POST['user'] && $_POST['pass']) {
+} elseif (!empty($_POST['user']) && !empty($_POST['pass'])) {
 
 	// Get user data
 	$user = user_info($_POST['user']);
@@ -43,7 +43,7 @@ if ($_SESSION['user']) {
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman [phpizza.com]">
+	<meta name="author" content="Alan Hardman <alan@phpizza.com>">
 	<style type="text/css">
 		#cmd {
 			height: 30px;
@@ -191,7 +191,7 @@ if ($_SESSION['user']) {
 <?php require 'inc/top.php'; ?>
 <div class="tab-content">
 	<div class="tab-pane active">
-		<?php if ($user['ram']) { ?>
+		<?php if (!empty($user['ram'])) { ?>
 			<div class="row-fluid">
 				<div class="span5">
 					<div class="well">
