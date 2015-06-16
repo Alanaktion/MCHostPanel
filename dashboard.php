@@ -204,25 +204,14 @@ if (!empty($_SESSION['user'])) {
 							<div class="btn-group">
 								<button class="btn btn-large btn-warning ht" id="btn-srv-restart" title="Restart" disabled><i class="icon-refresh"></i></button>
 							</div>
-							<!-- Lappy's a dick, so no one gets updates anymore.
-							<div class="btn-group">
-								<a class="btn btn-large btn-success dropdown-toggle" data-toggle="dropdown" href="#">Update <span class="caret"></span></a>
-								<ul class="dropdown-menu">
-									<li><a href="update.php?s=craftbukkit">CraftBukkit</a></li>
-									<li><a href="update.php?s=minecraft_server">Minecraft</a></li>
-								</ul>
-							</div>-->
 						</div>
-						<!--
-						<div>Update Server:
-							<div class="btn-group" style="display: inline-block;">
-								<button class="btn btn-small" id="btn-upd-cb">CraftBukkit</button>
-								<button class="btn btn-small" id="btn-upd-mc">Minecraft Server</button>
-							</div>
-						</div>
-						<br>
-						<p class="alert alert-info">Updating will stop your server and install the latest CraftBukkit Recommended Build or offical Minecraft server release.</p>
-						-->
+						<h4>Server JAR</h4>
+						<select id="server-jar">
+							<?php
+								$jars = scandir($user['']);
+								foreach()
+							?>
+						</select>
 					</div>
 					<div class="well">
 						<legend>Server Information</legend>

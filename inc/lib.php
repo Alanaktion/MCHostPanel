@@ -364,7 +364,7 @@ function server_cmd($name,$cmd) {
 
 /**
  * Safely shut down a server
- * @param  string $name
+ * @param string $name
  */
 function server_stop($name) {
 	shell_exec(
@@ -389,7 +389,7 @@ function server_stop($name) {
 
 /**
  * Immediately kill a server with a given username (does not save anything!)
- * @param  string $name
+ * @param string $name
  */
 function server_kill($name) {
 	$user = user_info($name);
@@ -416,6 +416,7 @@ function server_kill_all() {
 function server_running($name) {
 	return !!strpos(`screen -ls`, KT_SCREEN_NAME_PREFIX . $name);
 }
+
 
 /*
 888     888
@@ -448,7 +449,7 @@ function user_add($user,$pass,$role,$home,$ram=512,$port=25565) {
 
 	// Write to file
 	file_put_contents('data/users/' . strtolower(clean_alphanum($user['user'])) . '.json', json_encode($user));
-	
+
 	//check users home directory exists. if it doesn't we create it.
 	if (!file_exists($_POST['dir'])) {
     mkdir($_POST['dir'], 0777, true);
@@ -475,30 +476,30 @@ function user_info($user) {
 	}
 }
 
-//update user data
-function user_modify($user,$pass,$role,$home,$ram,$port)
-{
-	// check user existence and blank out the file for rewriting if it exists
+// Update user data
+function user_modify($user,$pass,$role,$home,$ram,$port,$jar='craftbukkit.jar') {
+
+	// check user existence
 	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
-		file_put_contents('data/users/' . strtolower(clean_alphanum($user)) . '.json', "");
-		
+		// file_put_contents('data/users/' . strtolower(clean_alphanum($user)) . '.json', "");
+
 		// Create user array
-	$user = array(
-		'user' => clean_alphanum($_POST['user']),
-		'pass' => bcrypt($pass),
-		'role' => $_POST['role'],
-		'home' => $_POST['dir'],
-		'ram'  => intval($_POST['ram']),
-		'port' => intval($_POST['port'])
-	);
-	
-	// Write to file
-	file_put_contents('data/users/' . strtolower(clean_alphanum($user['user'])) . '.json', json_encode($user));
+		$user = array(
+			'user' => clean_alphanum($_POST['user']),
+			'pass' => bcrypt($pass),
+			'role' => $_POST['role'],
+			'home' => $_POST['dir'],
+			'ram'  => intval($_POST['ram']),
+			'port' => intval($_POST['port']),
+			'jar'  => $jar,
+		);
+
+		// Write to file
+		file_put_contents('data/users/' . strtolower(clean_alphanum($user['user'])) . '.json', json_encode($user));
 		return true;
 	} else {
 		return false;
 	}
-	
 
 }
 
