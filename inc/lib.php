@@ -301,7 +301,8 @@ function server_start($name) {
 		return false;
 
 	// Check that server has a .jar
-	if(is_file($user['home'].'/craftbukkit.jar')) {
+	$jar = $user['jar'] ? $user['jar'] : 'craftbukkit.jar';
+	if(is_file($user['home'].'/'.$jar)) {
 
 		// Verify server.properties (Prevent user from modifying port)
 		if(is_file($user['home'].'/server.properties')) {
@@ -337,7 +338,7 @@ function server_start($name) {
 		shell_exec(
 			'cd '.escapeshellarg($user['home']).'; '. // Change to server directory
 			sprintf(
-				KT_SCREEN_CMD_START, // Base command
+				str_replace('craftbukkit.jar', $jar, KT_SCREEN_CMD_START), // Base command
 				escapeshellarg(KT_SCREEN_NAME_PREFIX.$user['user']), // Screen Name
 				intval($user['ram']/2), // Startup RAM
 				$user['ram']  // Maximum RAM
