@@ -214,10 +214,12 @@ if (!empty($_SESSION['user'])) {
 								<button class="btn btn-large btn-warning ht" id="btn-srv-restart" title="Restart" disabled><i class="icon-refresh"></i></button>
 							</div>
 						</div>
-						<h4>Server JAR</h4>
+						<br>
+						<p>Server JAR</p>
 						<select id="server-jar">
 							<?php
 								$jars = scandir($user['home']);
+								echo '<!-- '; print_r($jars); echo ' -->';
 								foreach($jars as $file) {
 									if(substr($file, -4, '.jar')) {
 										if((!empty($user['jar']) && $user['jar'] == $file) || (empty($user['jar']) && $file == 'craftbukkit.jar')) {
