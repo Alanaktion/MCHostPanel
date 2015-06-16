@@ -103,7 +103,7 @@ switch ($_POST['req']) {
 		echo json_encode($data);
 		break;
 	case 'set_jar':
-		user_modify($user['user'], $user['']) //...
+		user_modify($user['user'], $user['pass'], $user['role'], $user['home'], $user['ram'], $user['port'], $_POST['jar']);
 		break;
 }
 

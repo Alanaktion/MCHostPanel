@@ -119,6 +119,12 @@ if (!empty($_SESSION['user'])) {
 					callback();
 			});
 		}
+		function set_jar() {
+			$.pos('ajax.php', {
+				req: 'set_jar',
+				jar: $('#server-jar').val()
+			});
+		}
 		function refreshLog() {
 			updateStatus();
 			$.post('ajax.php', {
@@ -169,6 +175,9 @@ if (!empty($_SESSION['user'])) {
 				return false;
 			});
 
+			// Handle JAR change
+			$('#server-jar').change(set_jar);
+
 			// Fix sizing
 			$('#log').css('height', $(window).height() - 200 + 'px');
 
@@ -208,8 +217,16 @@ if (!empty($_SESSION['user'])) {
 						<h4>Server JAR</h4>
 						<select id="server-jar">
 							<?php
-								$jars = scandir($user['']);
-								foreach()
+								$jars = scandir($user['home']);
+								foreach($jars as $file) {
+									if(substr($file, -4, '.jar')) {
+										if((!empty($user['jar']) && $user['jar'] == $file) || (empty($user['jar']) && $file == 'craftbukkit.jar')) {
+											echo "<option value=\"$file\" selected>$file</option>";
+										} else {
+											echo "<option value=\"$file\">$file</option>";
+										}
+									}
+								}
 							?>
 						</select>
 					</div>
