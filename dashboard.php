@@ -221,7 +221,7 @@ if (!empty($_SESSION['user'])) {
 								$jars = scandir($user['home']);
 								echo '<!-- '; print_r($jars); echo ' -->';
 								foreach($jars as $file) {
-									if(substr($file, -4, '.jar')) {
+									if(substr($file, -4) == '.jar') {
 										if((!empty($user['jar']) && $user['jar'] == $file) || (empty($user['jar']) && $file == 'craftbukkit.jar')) {
 											echo "<option value=\"$file\" selected>$file</option>";
 										} else {
