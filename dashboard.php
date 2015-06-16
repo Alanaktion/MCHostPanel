@@ -120,7 +120,7 @@ if (!empty($_SESSION['user'])) {
 			});
 		}
 		function set_jar() {
-			$.pos('ajax.php', {
+			$.post('ajax.php', {
 				req: 'set_jar',
 				jar: $('#server-jar').val()
 			});
@@ -219,7 +219,6 @@ if (!empty($_SESSION['user'])) {
 						<select id="server-jar">
 							<?php
 								$jars = scandir($user['home']);
-								echo '<!-- '; print_r($jars); echo ' -->';
 								foreach($jars as $file) {
 									if(substr($file, -4) == '.jar') {
 										if((!empty($user['jar']) && $user['jar'] == $file) || (empty($user['jar']) && $file == 'craftbukkit.jar')) {
