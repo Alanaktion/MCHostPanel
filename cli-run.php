@@ -6,10 +6,10 @@
 // If you are the only one with shell access to your server, this is already protected, otherwise ensure only you can read/execute this file.
 
 /* Example usage:
-Start a server:   php -f action=start server=alanaktion
-Stop a server:    php -f action=stop server=alanaktion
-Restart a server: php -f action=restart server=alanaktion
-Kill a server:    php -f action=kill server=alanaktion
+Start a server:   php cli-run.php action=start server=alanaktion
+Stop a server:    php cli-run.php action=stop server=alanaktion
+Restart a server: php cli-run.php action=restart server=alanaktion
+Kill a server:    php cli-run.php action=kill server=alanaktion
 */
 
 // Verify running from command line

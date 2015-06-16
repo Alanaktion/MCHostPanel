@@ -12,7 +12,7 @@ if (isset($_GET['logout'])) {
 }
 
 // Redirect logged in users to the file manager
-if ($_SESSION['user'])
+if (!empty($_SESSION['user']))
 	header('Location: dashboard.php');
 
 ?><!doctype html>
@@ -21,7 +21,7 @@ if ($_SESSION['user'])
 	<title>MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 	<style type="text/css">
 		body {
 			background-image: url(img/bg.jpg);
@@ -41,7 +41,7 @@ if ($_SESSION['user'])
 	</div>
 	<div class="modal-body">
 		<?php
-		if ($_GET['error'] == 'badlogin')
+		if (!empty($_GET['error']) && $_GET['error'] == 'badlogin')
 			echo '<p class="alert alert-error">Invalid login details.</p>';
 		?>
 		<div class="control-group">
@@ -69,5 +69,5 @@ if ($_SESSION['user'])
 		<button class="btn btn-primary" type="submit">Log In</button>
 	</div>
 </form>
-<small class="muted pull-left" style="position:absolute;bottom:15px;left:15px;">&copy; <?php echo date('Y'); ?> <a href="http://alanaktion.com/">Alan Hardman</a></small>
+<small class="muted pull-left" style="position:absolute;bottom:15px;left:15px;">&copy; <?php echo date('Y'); ?> <a href="https://phpizza.com/">Alan Hardman</a></small>
 </body>

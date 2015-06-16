@@ -20,7 +20,7 @@ if(strpos($_REQUEST['file'], '..') !== false) {
 }
 
 // Save file if edited
-if ($_POST['text']) {
+if (isset($_POST['text']) && !empty($_POST['file'])) {
 	$file = $user['home'] . $_POST['file'];
 	$text = $_POST['text'];
 	if (get_magic_quotes_gpc())
@@ -40,7 +40,7 @@ $dir = rtrim($dir, '/');
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman [phpizza.com]">
+	<meta name="author" content="Alan Hardman <alan@phpizza.com>">
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
@@ -77,11 +77,11 @@ $dir = rtrim($dir, '/');
 	<form action="edit.php" method="post">
 		<div class="row-fluid">
 			<h3 style="font-weight:400;" class="pull-left">Editing <?php echo $_REQUEST['file']; ?></h3>
-			<?php if ($_POST['text'] && $saved !== false) { ?>
+			<?php if (isset($_POST['text']) && $saved !== false) { ?>
 				<p class="alert alert-success pull-right"><i class="icon-ok"></i> File was successfully saved.</p>
-			<?php } elseif ($_POST['text']) { ?>
+			<?php } elseif (isset($_POST['text'])) { ?>
 				<p class="alert alert-error pull-right"><i class="icon-remove"></i> File could not be saved!</p>
-			<?php } elseif ($_GET['action'] == 'reload') { ?>
+			<?php } elseif (isset($_GET['action']) && $_GET['action'] == 'reload') { ?>
 				<p class="alert alert-info pull-right">File reloaded.</p>
 			<?php } ?>
 			<div class="clearfix"></div>

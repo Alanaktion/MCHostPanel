@@ -46,7 +46,7 @@ if ($_POST['action'] == 'server-stop')
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<link rel="stylesheet" href="css/style.css">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">

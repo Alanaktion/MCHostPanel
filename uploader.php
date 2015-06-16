@@ -2,20 +2,14 @@
 require_once 'inc/lib.php';
 
 session_start();
-if ($_SESSION['user']) {
-	if (!$user = user_info($_SESSION['user'])) {
-		// User does not exist, redirect to login page
-		header('Location: .');
-		exit('Not Authorized');
-	}
-} else {
+if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
 }
 
 // Upload files
-if ($_FILES['files'] && $_POST['dir']) {
+if (isset($_FILES['files']) && isset($_POST['dir'])) {
 	$uploads = $_FILES['files'];
 	$numfiles = count($uploads['name']);
 	for ($i = 0; $i < $numfiles; $i++)
@@ -28,7 +22,7 @@ if ($_FILES['files'] && $_POST['dir']) {
 	<title>Upload Files | MCHostPanel</title>
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-ui">
-	<meta name="author" content="Alan Hardman (http://alanaktion.com)">
+	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 	<script src="js/jquery-1.7.2.min.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 	<style type="text/css">
