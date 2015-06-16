@@ -482,16 +482,15 @@ function user_modify($user,$pass,$role,$home,$ram,$port,$jar='craftbukkit.jar') 
 
 	// check user existence
 	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
-		// file_put_contents('data/users/' . strtolower(clean_alphanum($user)) . '.json', "");
 
 		// Create user array
 		$user = array(
-			'user' => clean_alphanum($_POST['user']),
+			'user' => clean_alphanum($user),
 			'pass' => bcrypt($pass),
-			'role' => $_POST['role'],
-			'home' => $_POST['dir'],
-			'ram'  => intval($_POST['ram']),
-			'port' => intval($_POST['port']),
+			'role' => $role,
+			'home' => $home,
+			'ram'  => intval($ram),
+			'port' => intval($port),
 			'jar'  => $jar,
 		);
 
