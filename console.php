@@ -26,6 +26,7 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		function refreshLog() {
+			return false;
 			updateStatus();
 			$.post('ajax.php', {
 				req: 'server_log'
@@ -40,6 +41,7 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 		}
 
 		function refreshLogOnce() {
+			return false;
 			$.post('ajax.php', {
 				req: 'server_log'
 			}, function (data) {
@@ -56,22 +58,23 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 				} else {
 					$('#cmd').prop('disabled', true);
 				}
+				window.setTimeout(updateStatus, 1000);
 			}, 'json');
 		}
 
 		$(document).ready(function () {
 
 			// Send commands with form onSubmit
-			$('#frm-cmd').submit(function () {
+			$('#frm-cmd').submit(function (e) {
 				$.post('ajax.php', {
 					req: 'server_cmd',
 					cmd: $('#cmd').val()
 				}, function () {
 					$('#cmd').val('').prop('disabled', false).focus();
-					refreshLogOnce();
+					// refreshLogOnce();
 				});
 				$('#cmd').prop('disabled', true);
-				return false;
+				e.preventDefault();
 			});
 
 			// Fix sizing
@@ -105,6 +108,8 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 			<form id="frm-cmd">
 				<input type="text" id="cmd" name="cmd" maxlength="250" autofocus>
 			</form>
+			<script type="text/javascript">var dataelem='#log',pausetoggle='#pause';</script>
+			<script src="js/logtail.js"></script>
 		<?php
 			} else {
 				echo '<p class="alert alert-info">Your account does not have a server.</p>';

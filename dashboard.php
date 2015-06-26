@@ -127,6 +127,7 @@ if (!empty($_SESSION['user'])) {
 		}
 		function refreshLog() {
 			updateStatus();
+			return false;
 			$.post('ajax.php', {
 				req: 'server_log'
 			}, function (data) {
@@ -139,6 +140,7 @@ if (!empty($_SESSION['user'])) {
 			});
 		}
 		function refreshLogOnce() {
+			return false;
 			$.post('ajax.php', {
 				req: 'server_log'
 			}, function (data) {
@@ -169,7 +171,7 @@ if (!empty($_SESSION['user'])) {
 					cmd: $('#cmd').val()
 				}, function () {
 					$('#cmd').val('').prop('disabled', false).focus();
-					refreshLogOnce();
+					// refreshLogOnce();
 				});
 				$('#cmd').prop('disabled', true);
 				return false;
@@ -182,12 +184,12 @@ if (!empty($_SESSION['user'])) {
 			$('#log').css('height', $(window).height() - 200 + 'px');
 
 			// Initialize log
-			$.post('ajax.php', {
+			/*$.post('ajax.php', {
 				req: 'server_log'
 			}, function (data) {
 				$('#log').html(data).scrollTop($('#log')[0].scrollHeight);
 				window.setTimeout(refreshLog, 3000);
-			});
+			});*/
 
 			// Keep sizing correct
 			$(document).resize(function () {
@@ -248,6 +250,17 @@ if (!empty($_SESSION['user'])) {
 						<input type="text" id="cmd" name="cmd" maxlength="250" placeholder="Enter a command" autofocus>
 					</form>
 				</div>
+				<?php
+					if(is_file($user['home'] . "/logs/latest.log")) {
+						// 1.7 logs
+						$logfile = $user['home'] . '/logs/latest.log';
+					} elseif(is_file($user['home'] . "/server.log")) {
+						// 1.6 and earlier
+						$logfile = $user['home'] . '/server.log';
+					}
+				?>
+				<script type="text/javascript">var url='<?php echo $logfile; ?>',dataelem='#log',pausetoggle='#pause';</script>
+				<script src="js/logtail.js"></script>
 			</div>
 		<?php
 		} else
