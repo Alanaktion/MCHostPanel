@@ -85,6 +85,43 @@ switch ($_POST['req']) {
 			echo "No log file found.";
 		}
 		break;
+	case 'server_log_bytes':
+		header('Content-type: application/json');
+
+		// Find log file
+		if(is_file(is_file($user['home'] . '/logs/latest.log')) {
+			$file = $user['home'] . '/logs/latest.log';
+		} elseif(is_file($user['home'] . '/server.log')) {
+			$file = $user['home'] . '/server.log';
+		} else {
+			exit(json_encode(array('error' => 1, 'msg' => 'No log file found.')));
+		}
+
+		// Get requested byte range
+		$start = isset($_REQUEST['start']) ? intval($_REQUEST['start']) : 0;
+		$end = isset($_REQUEST['end']) ? intval($_REQUEST['end']) : null;
+
+		$data = @file_get_contents($file, false, null, $start, $end);
+
+		$return = array(
+			'start' => $start,
+			'end' => $start + strlen($data),
+			'data' => $data,
+		);
+
+		if($data === false) {
+			$data = file_get_contents($file, false, null, 0, 30*1024);
+			$return = array(
+				'error' => 2,
+				'msg' => 'Failed to requested bytes from the log file. Returned first 30 KB.',
+				'start' => 0,
+				'end' => strlen($data),
+				'data' => $data,
+			);
+		}
+
+		echo json_encode($return);
+
 	case 'players':
 		require_once 'inc/MinecraftQuery.class.php';
 		$mq = new MinecraftQuery();
