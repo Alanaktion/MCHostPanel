@@ -8,7 +8,7 @@ if(file_exists($filename) && time()-filemtime($filename) > 3600*24*3) { // cache
 	$raw = file_get_contents($filename);
 } else {
 	$url = 'https://api.mojang.com/profiles/minecraft';
-	$options = array('header' => "Content-type: application/json\r\n", 'method' => 'POST', 'content' => json_encode(array($username)));
+	$options = array('http' => array('header' => "Content-type: application/json\r\n", 'method' => 'POST', 'content' => json_encode(array($username))));
 	$context = stream_context_create($options);
 	$profile = json_decode(file_get_contents($url, false, $context));
 	if(empty($profile->id)) exit('No UUID found.');
