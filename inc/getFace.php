@@ -1,7 +1,7 @@
 <?php
 
 $username = $_GET['username'];
-if(empty($username)) exit;
+if(empty($username)) exit('No username specified.');
 
 $filename = 'skintmp/' . md5($username) . '.png';
 if(file_exists($filename) && time()-filemtime($filename) > 3600*24*3) { // cached file exists, is newer than 3 days
@@ -11,7 +11,7 @@ if(file_exists($filename) && time()-filemtime($filename) > 3600*24*3) { // cache
 	$options = array('header' => "Content-type: application/json\r\n", 'method' => 'POST', 'content' => json_encode(array($username)));
 	$context = stream_context_create($options);
 	$profile = json_decode(file_get_contents($url, false, $context));
-	if(empty($profile->id)) exit;
+	if(empty($profile->id)) exit('No UUID found.');
 
 	$data = json_decode(file_get_contents('https://sessionserver.mojang.com/session/minecraft/profile/' . $profile->id));
 	$properties = json_decode(base64_decode($data->properties[0]));
