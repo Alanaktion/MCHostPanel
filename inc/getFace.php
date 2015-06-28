@@ -4,7 +4,7 @@ $username = $_GET['username'];
 if(empty($username)) exit('No username specified.');
 
 $filename = 'skintmp/' . md5($username) . '.png';
-if(file_exists($filename) && time()-filemtime($filename) > 3600*24*3) { // cached file exists, is newer than 3 days
+if(file_exists($filename) && time()-filemtime($filename) > 3600*24*3 && filesize($filename)) { // cached file exists, is newer than 3 days
 	$raw = file_get_contents($filename);
 } else {
 	$url = 'https://api.mojang.com/profiles/minecraft';
