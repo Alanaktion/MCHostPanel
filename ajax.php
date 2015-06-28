@@ -89,7 +89,7 @@ switch ($_POST['req']) {
 		header('Content-type: application/json');
 
 		// Find log file
-		if(is_file(is_file($user['home'] . '/logs/latest.log')) {
+		if(is_file($user['home'] . '/logs/latest.log')) {
 			$file = $user['home'] . '/logs/latest.log';
 		} elseif(is_file($user['home'] . '/server.log')) {
 			$file = $user['home'] . '/server.log';
