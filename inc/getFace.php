@@ -14,7 +14,7 @@ if(file_exists($filename) && time()-filemtime($filename) > 3600*24*3) { // cache
 	if(empty($profile[0]->id)) exit('No UUID found.');
 
 	$data = json_decode(file_get_contents('https://sessionserver.mojang.com/session/minecraft/profile/' . $profile[0]->id));
-	$properties = json_decode(base64_decode($data->properties[0]));
+	$properties = json_decode(base64_decode($data->properties[0]->value));
 	$raw = file_get_contents($properties->textures->SKIN->url);
 
 	if(!is_dir('mktmp')) mkdir('skintmp');
