@@ -250,7 +250,7 @@ if (!empty($_SESSION['user'])) {
 		<?php
 		} else
 			echo '
-			<p class="alert alert-info">Your account does not have a server.</p>
+			<p> class="alert alert-info">Your account does not have a server.</p>
 			<footer class="muted">&copy; ' . date('Y') . ' Alan Hardman</footer>
 ';
 		?>
