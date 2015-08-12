@@ -300,8 +300,19 @@ function server_start($name) {
 	if(server_running($user['user']))
 		return false;
 
-	// Check that server has a .jar
-	$jar = $user['jar'] ? $user['jar'] : 'craftbukkit.jar';
+	// Check that server has a .jar, selecting the first .jar in the directory if one has not been set
+	if(empty($user['jar'])) {
+		$files = scandir($user['home']);
+		foreach($files as $file) {
+			if(substr($file, -4) == '.jar') {
+				$jar = $file;
+				break;
+			}
+		}
+	} else {
+		$jar = $user['jar'];
+	}
+
 	if(is_file($user['home'].'/'.$jar)) {
 
 		// Verify server.properties (Prevent user from modifying port)
