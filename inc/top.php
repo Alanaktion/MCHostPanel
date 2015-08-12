@@ -8,7 +8,7 @@
 
 			<li><a href='userProfile.php'>Logged in as <strong><?php echo $user['user'];?></strong></a></a></li>
 
-			<li><img src="http://alanaktion.net/mcface.php?user=<?php echo urlencode($user['user']); ?>" alt="<?php echo $user['user']; ?>"></li>
+			<li><img src="inc/getFace.php?username=<?php echo urlencode($user['user']); ?>" alt="<?php echo $user['user']; ?>"></li>
 			<li><a href="./?logout"><i class="icon-off icon-white"></i> Log Out</a></li>
 		</ul>
 	</div>
