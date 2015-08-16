@@ -1,4 +1,6 @@
 <?php
+require_once 'inc/lib.php';
+
 session_start();
 
 // Destroy session on ?logout
