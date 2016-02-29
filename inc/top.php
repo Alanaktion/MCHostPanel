@@ -8,7 +8,10 @@
 
 			<li><a href='userProfile.php'>Logged in as <strong><?php echo $user['user']; ?></strong></a></li>
 
-			<li><img width="40" height="40" src="inc/getFace.php?username=<?php echo urlencode($user['user']); ?>" alt="<?php echo $user['user']; ?>"></li>
+			<?php if($user['user']) { ?>
+				<li><img width="40" height="40" src="inc/getFace.php?username=<?php echo urlencode($user['user']); ?>" alt="<?php echo $user['user']; ?>"></li>
+			<?php } ?>
+
 			<li><a href="./?logout"><i class="icon-off icon-white"></i> Log Out</a></li>
 		</ul>
 	</div>
