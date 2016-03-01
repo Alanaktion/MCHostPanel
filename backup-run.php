@@ -37,7 +37,7 @@ if(!server_running($user['user'])) {
 
 server_cmd($user['user'], "/save-all");
 //Give the server a chance to save
-sleep(15);
+sleep(30);
 //Prevent auto-saves while we run the backup
 server_cmd($user['user'], "/save-off");
 
@@ -74,6 +74,9 @@ try {
 	error_log("MCHostPanel Backup: '" . $user . "' Backup Failure!\r\nException : " . $e);
 	exit("Exception : " . $e);
 }
+
+//Prevent auto-saves while we run the backup
+server_cmd($user['user'], "/save-on");
 
 echo "MCHostPanel Backup Success";
 ?>
