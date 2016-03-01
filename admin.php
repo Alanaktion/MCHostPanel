@@ -137,8 +137,8 @@ if ($_POST['action'] == 'server-stop')
 				<label class="control-label" for="ram">Backup frequency</label>
 				<div class="controls">
 					<div class="input-append">
-						<input class="span3" type="number" name="freq" id="freq" value="240">
-						<span class="add-on">Minutes</span>
+						<input class="span3" type="number" name="freq" id="freq" value="1">
+						<span class="add-on">Hours</span>
 					</div>
 					<span class="text-info">240 = 4 Hours</span>
 				</div>
@@ -147,7 +147,7 @@ if ($_POST['action'] == 'server-stop')
 				<div class="controls">
 					<div class="input-append">
 						<input class="span3" type="number" name="ram" id="deleteAfter" value="0">
-						<span class="add-on">Minutes</span>
+						<span class="add-on">Hours</span>
 					</div>
 					<span class="text-info">0 = Never delete</span>
 				</div>

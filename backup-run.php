@@ -6,6 +6,11 @@ if(!isset($_GET['user'])) {
 	exit("No user supplied!");
 }
 
+if(!isset($_GET['delete'])) {
+	error_log("MCHostPanel Backup: No backup auto-delete supplied!");
+	exit("No auto-delete supplied!");
+}
+
 if (!$user = user_info($_GET['user'])) {
 	// Clean out the supplied user just incase
 	$user = preg_replace('/[^A-Za-z0-9\- ]/', '', $_GET['user']);
@@ -29,6 +34,19 @@ if(!is_dir($user['home'] . "/" . "backups")){
 	mkdir($user['home'] . "/" . "backups");
 }
 
+$timeout = intval($_GET['delete']) * 60 * 60; //Convert to seconds
+
+if($timeout !== 0) {
+	$backups = array_diff(scandir($user['home'] . "/" . "backups/"), array('.', '..'));
+	
+	foreach($backups as $backup) {
+		$timeCreated = filectime($user['home'] . "/" . "backups/" . $backup);
+		//Times up!
+		if($timeout + $timeCreated <= time()) {
+			unlink($user['home'] . "/" . "backups/" . $backup);
+		}
+	}
+}
 try {
 	$archiveFile = date('Y-m-d') . " - " . time() . " - Settings.tar";
 	//$worldArchiveFile = date('Y-m-d') . " - " . time() . " - World.tar";
