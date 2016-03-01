@@ -511,7 +511,7 @@ function server_manage_backup($name, $action, $freq, $deleteAfter) {
 				// A secret passed to the cron job to prevent people from guessing jobs on improper setups
 				$secret = hash("sha256", $user['pass']);
 				
-				$jobFile = $_SERVER['DOCUMENT_ROOT'] . "/backup-run.php?user=" . $user['user'] . "&secret=" . $secret . "&delete=" . $deleteAfter;
+				$jobFile = "php " .$_SERVER['DOCUMENT_ROOT'] . "/backup-run.php?user=" . $user['user'] . "&secret=" . $secret . "&delete=" . $deleteAfter;
 				$job = "0 " . $freq . " * * * " . $jobFile;
 				create_cron($job);
 			}
