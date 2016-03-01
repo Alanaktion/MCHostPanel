@@ -118,6 +118,43 @@ if ($_POST['action'] == 'server-stop')
 				</select>
 				<button type="submit" class="btn btn-danger">Log In</button>
 			</form>
+			<form action="admin.php" method="post">
+				<legend>Scheduled Backups</legend>
+				
+				<label class="control-label" for="user">Server</label>
+				<div class="controls">
+					<select name="user" style="vertical-align: top;">
+						<?php
+						$ul = user_list();
+						foreach ($ul as $u)
+							if($u != "empty")
+								echo '<option value="' . $u . '">' . $u . '</option>';
+						?>
+					</select>
+				</div>
+				
+				<label class="control-label" for="ram">Backup frequency</label>
+				<div class="controls">
+					<div class="input-append">
+						<input class="span3" type="number" name="freq" id="freq" value="240">
+						<span class="add-on">Minutes</span>
+					</div>
+					<span class="text-info">240 = 4 Hours</span>
+				</div>
+				
+				<label class="control-label" for="ram">Delete backups older than</label>
+				<div class="controls">
+					<div class="input-append">
+						<input class="span3" type="number" name="ram" id="deleteAfter" value="0">
+						<span class="add-on">Minutes</span>
+					</div>
+					<span class="text-info">0 = Never delete</span>
+				</div>
+					
+				
+				<button type="submit" class="btn btn-success">Enable</button>
+				<button type="submit" class="btn btn-danger" disabled>Disable</button>
+			</form>
 		</div>
 		<div class="span4">
 			<form action="admin.php" method="post" autocomplete="off">
