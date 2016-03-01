@@ -20,6 +20,15 @@ if ($_POST['action'] == 'user-switch' && $_POST['user']) {
 	exit('Switching Users');
 }
 
+//Manage a backup cron job
+if($_POST['action'] == 'backup-manage' && $_POST['user']) {
+	
+	//Determine which button (create or delete) was pressed and pass it as an action
+	$action = (isset($_POST['create']) ? "create" : (isset($_POST['delete']) ? "delete" : exit("Action error")));
+	
+	server_manage_backup($_POST['user'], $action, intvaL($_POST["hrFreq"]), intval($_POST["hrDeleteAfter"]));
+}
+
 // Add new user
 if ($_POST['action'] == 'user-add')
 	user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
@@ -51,12 +60,32 @@ if ($_POST['action'] == 'server-stop')
 	<script src="js/bootstrap.min.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
+			check_cron();
+			
 			window.setTimeout(function () {
 				$('.alert-success,.alert-error').fadeOut();
 			}, 3000);
 			$('#frm-killall').submit(function () {
 				return confirm('Are you sure you want to KILL EVERY SERVER?\nServers will not save any new data, and all connected players will be disconnected!');
 			});
+
+			function check_cron() {
+				$.post('ajax.php', {
+					req: 'cron_exists',
+					user: $('#backup-user').val()
+				}, function (data) {
+					if(data == true) {
+						$("#backup-create").prop("disabled",true);
+						$("#backup-delete").removeAttr("disabled");
+					} else {
+						$("#backup-create").removeAttr("disabled");
+						$("#backup-delete").prop("disabled",true);
+					}
+				});
+			}
+			
+			$("#backup-user").change(check_cron);
+			
 		});
 	</script>
 </head>
@@ -105,6 +134,16 @@ if ($_POST['action'] == 'server-stop')
 				</select>
 				<button type="submit" class="btn btn-danger">Kill Server</button>
 			</form>
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			<form action="admin.php" method="post">
 				<legend>Switch to a User</legend>
 				<input type="hidden" name="action" value="user-switch">
@@ -124,7 +163,7 @@ if ($_POST['action'] == 'server-stop')
 				
 				<label class="control-label" for="user">Server</label>
 				<div class="controls">
-					<select name="user" style="vertical-align: top;">
+					<select name="user" style="vertical-align: top;" id="backup-user">
 						<?php
 						$ul = user_list();
 						foreach ($ul as $u)
@@ -137,26 +176,37 @@ if ($_POST['action'] == 'server-stop')
 				<label class="control-label" for="ram">Backup frequency</label>
 				<div class="controls">
 					<div class="input-append">
-						<input class="span3" type="number" name="freq" id="freq" value="1">
+						<input class="span3" type="number" name="hrFreq" id="hrFreq" value="1">
 						<span class="add-on">Hours</span>
 					</div>
-					<span class="text-info">240 = 4 Hours</span>
+					<span class="text-info">4 = Every 4 Hours</span>
 				</div>
 				
 				<label class="control-label" for="ram">Delete backups older than</label>
 				<div class="controls">
 					<div class="input-append">
-						<input class="span3" type="number" name="ram" id="deleteAfter" value="0">
+						<input class="span3" type="number" name="hrDeleteAfter" id="hrDeleteAfter" value="0">
 						<span class="add-on">Hours</span>
 					</div>
-					<span class="text-info">0 = Never delete</span>
+					<span class="text-info">0 = Never delete, 4 = Delete after 4 hours</span>
 				</div>
 					
 				
-				<button type="submit" class="btn btn-success">Enable</button>
-				<button type="submit" class="btn btn-danger" disabled>Disable</button>
+				<button type="submit" name="create" id="backup-create" class="btn btn-success">Enable</button>
+				<button type="submit" name="delete" id="backup-delete" class="btn btn-danger">Disable</button>
 			</form>
 		</div>
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		<div class="span4">
 			<form action="admin.php" method="post" autocomplete="off">
 				<input type="hidden" name="action" value="user-add">

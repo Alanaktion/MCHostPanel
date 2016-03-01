@@ -276,6 +276,39 @@ function rmdirr($dirname) {
 	return true;
 }
 
+/**
+ * Creates a MCHostPanel cron job
+ * @param string $job A fully formatted cron job
+ */
+function create_cron($job) {
+	$output = shell_exec('crontab -l');
+	file_put_contents("/tmp/crontab.txt", $output . $job .PHP_EOL);
+	echo exec("crontab /tmp/crontab.txt");
+}
+
+/**
+ * Deletes a MCHostPanel cron job
+ * @param string $name
+ */
+function delete_cron($name) {
+	$output = shell_exec('crontab -l');
+	$output = preg_replace("/^.*backup-run\.php\?user\=" . $name . "(.*)[\r\n]/m", "", $output);
+	
+	file_put_contents("/tmp/crontab.txt", $output);
+	echo exec("crontab /tmp/crontab.txt");
+}
+
+/**
+ * Checks if a cron job already exists for this user
+ * @param string $name
+ * @return bool on match
+ */
+function check_cron_exists($name) {
+	$output = shell_exec('crontab -l');
+	return (preg_match("/backup-run\.php\?user\=" . $name . "/", $output));
+}
+
+
 /*
  .d8888b.
 d88P  Y88b
@@ -427,6 +460,38 @@ function server_kill_all() {
  */
 function server_running($name) {
 	return !!strpos(`screen -ls`, KT_SCREEN_NAME_PREFIX . $name);
+}
+
+/**
+ * Creates and deletes CRON jobs that manage the server backups
+ * @param string $name The users / servers name
+ * @param string $action "create" or "delete" based on the form input
+ * @param integer $freq 1-24 based on the hour internal to run the job. (4 = every 4 hours)
+ * @param integer $deleteAfter 0+ Number of hours to keep a backup. 0 is never delete
+ * @return bool
+ */
+function server_manage_backup($name, $action, $freq, $deleteAfter) {
+	if(!$user = user_info($name)) {
+		exit("Invalid user");
+	}
+	
+	switch($action) {
+		case "create":
+			if(!check_cron_exists($name)) {
+				$freq = ($freq == 1 ? "*" : "*/" . $freq);
+				
+				// A secret passed to the cron job to prevent people from guessing jobs on improper setups
+				$secret = hash("sha256", $user['pass']);
+				
+				$jobFile = $_SERVER['DOCUMENT_ROOT'] . "/backup-run.php?user=" . $user['user'] . "&secret=" . $secret . "&delete=" . $deleteAfter;
+				$job = "0 " . $freq . " * * * " . $jobFile;
+				create_cron($job);
+			}
+			break;
+		case "delete":
+			delete_cron($name);			
+			break;
+	}
 }
 
 

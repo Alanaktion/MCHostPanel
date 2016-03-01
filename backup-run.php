@@ -1,6 +1,11 @@
 <?php 
 require_once 'inc/lib.php';
 
+if(!isset($_GET['secret'])) {
+	error_log("MCHostPanel Backup: No secret supplied!");
+	exit("No user supplied!");
+}
+
 if(!isset($_GET['user'])) {
 	error_log("MCHostPanel Backup: No user supplied!");
 	exit("No user supplied!");
@@ -17,6 +22,12 @@ if (!$user = user_info($_GET['user'])) {
 	
 	// User does not exist, redirect to login page
 	error_log("MCHostPanel Backup: '" . $user . "' user does not exist!");
+	exit('Not Authorized');
+}
+
+//Make sure this page is run via cron and not from URL guessing
+if($_GET['secret'] != hash("sha256", $user['pass'])) {
+	error_log("MCHostPanel Backup: Invalid secret!");
 	exit('Not Authorized');
 }
 
