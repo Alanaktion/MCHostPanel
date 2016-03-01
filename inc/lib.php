@@ -308,6 +308,34 @@ function check_cron_exists($name) {
 	return (preg_match("/backup-run\.php\?user\=" . $name . "/", $output));
 }
 
+/**
+ * Checks if a cron job already exists and return data about it
+ * @param string $name
+ * @return array on match
+ */
+function get_cron($name) {
+	if(check_cron_exists($name)) {
+		$output = shell_exec('crontab -l');	
+			
+		preg_match("/^.*backup-run\.php\?user\=" . $name . "(.*)/m", $output, $matches);
+		$parts = explode(" ", $matches[0]);
+		
+		//Spooky stuff
+		$freq = explode("/", $parts[1]); //Grab the cron job date stuff
+		$freq = (isset($freq[1]) ? $freq[1] : 1); //freq 1 will have numbers greater than 2 for intervals
+		$url = explode("&", $parts[5]); //Grab the actual job items
+		$delete = explode("=", $url[2]);
+		
+		$ret = array();
+		$ret["hrFreq"] = $freq;
+		$ret['hrDeleteAfter'] = $delete[1];
+		
+		return $ret;
+	} else {
+		return array();
+	}
+}
+
 
 /*
  .d8888b.

@@ -71,15 +71,28 @@ if ($_POST['action'] == 'server-stop')
 
 			function check_cron() {
 				$.post('ajax.php', {
-					req: 'cron_exists',
+					req: 'get_cron',
 					user: $('#backup-user').val()
 				}, function (data) {
-					if(data == true) {
+					var enabled = !!data.hrFreq; //check the existence of a property
+					if(enabled) {
 						$("#backup-create").prop("disabled",true);
 						$("#backup-delete").removeAttr("disabled");
+
+						$("#hrDeleteAfter").prop("disabled",true);
+						$("#hrFreq").prop("disabled",true);
+						
+						$("#hrDeleteAfter").val(data.hrDeleteAfter);
+						$("#hrFreq").val(data.hrFreq);
 					} else {
 						$("#backup-create").removeAttr("disabled");
 						$("#backup-delete").prop("disabled",true);
+
+						$("#hrDeleteAfter").removeAttr("disabled");
+						$("#hrFreq").removeAttr("disabled");
+						
+						$("#hrDeleteAfter").val(0);
+						$("#hrFreq").val(1);
 					}
 				});
 			}

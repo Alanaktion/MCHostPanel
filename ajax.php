@@ -56,7 +56,12 @@ switch ($_POST['req']) {
 		file_rename($_POST['path'], $_POST['newname'], $user['home']);
 		break;
 	case 'cron_exists':
+		header('Content-type: application/json');
 		echo json_encode(check_cron_exists($_POST['user']));
+		break;
+	case 'get_cron':
+		header('Content-type: application/json');
+		echo json_encode(get_cron($_POST['user']));
 		break;
 	case 'server_start':
 		echo server_start($user['user']);
