@@ -163,7 +163,8 @@ if ($_POST['action'] == 'server-stop')
 			<form action="admin.php" method="post">
 				<input type="hidden" name="action" value="backup-manage">
 				<legend>Scheduled Backups</legend>
-				
+				<h3>Scheduled backups</h3>
+				<pre><?php echo shell_exec('crontab -l'); ?></pre>
 				<label class="control-label" for="user">Server</label>
 				<div class="controls">
 					<select name="user" style="vertical-align: top;" id="backup-user">
