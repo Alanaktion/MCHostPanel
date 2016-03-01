@@ -75,7 +75,7 @@ try {
 	exit("Exception : " . $e);
 }
 
-//Prevent auto-saves while we run the backup
+//Turn auto-saves back on
 server_cmd($user['user'], "/save-on");
 
 echo "MCHostPanel Backup Success";
