@@ -133,17 +133,7 @@ if ($_POST['action'] == 'server-stop')
 					</optgroup>
 				</select>
 				<button type="submit" class="btn btn-danger">Kill Server</button>
-			</form>
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
+			</form>			
 			<form action="admin.php" method="post">
 				<legend>Switch to a User</legend>
 				<input type="hidden" name="action" value="user-switch">
@@ -196,17 +186,6 @@ if ($_POST['action'] == 'server-stop')
 				<button type="submit" name="delete" id="backup-delete" class="btn btn-danger">Disable</button>
 			</form>
 		</div>
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 		<div class="span4">
 			<form action="admin.php" method="post" autocomplete="off">
 				<input type="hidden" name="action" value="user-add">
