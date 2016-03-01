@@ -2,7 +2,7 @@
 require_once 'inc/lib.php';
 
 session_start();
-if (!$_SESSION['user'] && !$user = user_info($_SESSION['user'])) {
+if ((!$user = user_info($_SESSION['user'])) && !$_SESSION['user']) {
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
