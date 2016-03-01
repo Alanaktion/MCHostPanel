@@ -119,6 +119,7 @@ if ($_POST['action'] == 'server-stop')
 				<button type="submit" class="btn btn-danger">Log In</button>
 			</form>
 			<form action="admin.php" method="post">
+				<input type="hidden" name="action" value="backup-manage">
 				<legend>Scheduled Backups</legend>
 				
 				<label class="control-label" for="user">Server</label>
