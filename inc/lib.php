@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright (c) Alan Hardman 2013
+ * Copyright (c) Alan Hardman 2013-2016
  * @author Alan Hardman <alan@phpizza.com>
  *
  * Note: I used ASCII art text with the Colossal font
@@ -29,16 +29,23 @@ require_once 'inc/mclogparse.inc.php';
 */
 
 /**
- * [file_rename description]
- * @param  [type] $path    [description]
- * @param  [type] $newname [description]
- * @param  [type] $home    [description]
- * @return [type]          [description]
+ * Rename a user's file
+ * @param  string $path
+ * @param  string $newname
+ * @param  string $home
+ * @return bool
  */
 function file_rename($path,$newname,$home) {
 	return rename($home.$path,$home.rtrim($path,basename($path)).$newname);
 }
 
+/**
+ * Download a user's file
+ * @param  string  $path
+ * @param  string  $home
+ * @param  boolean $force
+ * @return void
+ */
 function download($path,$home,$force = true) {
 	if(is_file($home.$path) && $force) {
 		header('Content-type: application/octet-stream');
@@ -228,7 +235,8 @@ function file_download($url,$path) {
 }
 
 /**
- * Delete a folder and it's contents (stack algorithm, faster than a recursive function)
+ * Delete a folder and it's contents
+ * (stack algorithm, faster than a recursive function)
  * @param  string $dirname
  * @return bool
  */
@@ -276,13 +284,25 @@ function rmdirr($dirname) {
 	return true;
 }
 
+
+/*
+ .d8888b.
+d88P  Y88b
+888    888
+888        888d888 .d88b.  88888b.
+888        888P"  d88""88b 888 "88b
+888    888 888    888  888 888  888
+Y88b  d88P 888    Y88..88P 888  888
+ "Y8888P"  888     "Y88P"  888  888
+*/
+
 /**
  * Creates a MCHostPanel cron job
  * @param string $job A fully formatted cron job
  */
 function create_cron($job) {
 	$output = shell_exec('crontab -l');
-	file_put_contents("/tmp/crontab.txt", $output . $job .PHP_EOL);
+	file_put_contents("/tmp/crontab.txt", $output . $job . PHP_EOL);
 	echo exec("crontab /tmp/crontab.txt");
 }
 
@@ -292,8 +312,8 @@ function create_cron($job) {
  */
 function delete_cron($name) {
 	$output = shell_exec('crontab -l');
-	$output = preg_replace("/^.*backup-run\.php " . $name . "(.*)[\r\n]/mi", "", $output);
-	
+	$output = preg_replace("/^.*backup-run\.php " . preg_quote(escapeshellarg($name)) . "(.*)[\r\n]/mi", "", $output);
+
 	file_put_contents("/tmp/crontab.txt", $output);
 	echo exec("crontab /tmp/crontab.txt");
 }
@@ -305,7 +325,7 @@ function delete_cron($name) {
  */
 function check_cron_exists($name) {
 	$output = shell_exec('crontab -l');
-	return (preg_match("/backup-run\.php " . $name . "/i", $output));
+	return (preg_match("/backup-run\.php " . preg_quote(escapeshellarg($name)) . "/i", $output));
 }
 
 /**
@@ -315,22 +335,22 @@ function check_cron_exists($name) {
  */
 function get_cron($name) {
 	if(check_cron_exists($name)) {
-		$output = shell_exec('crontab -l');	
-			
-		preg_match("/^.*backup-run\.php " . $name . "(.*)/mi", $output, $matches);
-		
+		$output = shell_exec('crontab -l');
+
+		preg_match("/^.*backup-run\.php " . preg_quote(escapeshellarg($name)) . "(.*)/mi", $output, $matches);
+
 		$parts = explode(" ", $matches[0]);
-		
+
 		//Spooky stuff
 		$freq = explode("/", $parts[1]); //Grab the cron job date stuff
 		$freq = (isset($freq[1]) ? $freq[1] : 1); //freq 1 will have numbers greater than 2 for intervals
-		
+
 		$delete = $parts[9];
-		
+
 		$ret = array();
 		$ret["hrFreq"] = $freq;
 		$ret['hrDeleteAfter'] = $delete;
-		
+
 		return $ret;
 	} else {
 		return array();
@@ -503,24 +523,24 @@ function server_manage_backup($name, $action, $freq, $deleteAfter) {
 	if(!$user = user_info($name)) {
 		exit("Invalid user");
 	}
-	
+
 	switch($action) {
 		case "create":
 			if(!check_cron_exists($name)) {
-				
+
 				$freq = ($freq == 1 ? "*" : "*/" . $freq);
-				
+
 				// A secret passed to the cron job to prevent people from guessing jobs on improper setups
 				$secret = hash("sha256", $user['pass']);
-				
-				$jobFile = "php " .$_SERVER['DOCUMENT_ROOT'] . "/backup-run.php " . $user['user'] . " " . $secret . " " . $deleteAfter;
+
+				$jobFile = "php " .$_SERVER['DOCUMENT_ROOT'] . "/backup-run.php " . escapeshellarg($user['user']) . " " . escapeshellarg($secret) . " " . escapeshellarg($deleteAfter);
 				$job = "0 " . $freq . " * * * " . $jobFile;
-				
+
 				create_cron($job);
 			}
 			break;
 		case "delete":
-			delete_cron($name);			
+			delete_cron($name);
 			break;
 	}
 }
