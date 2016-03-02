@@ -60,6 +60,9 @@ sleep(30);
 //Prevent auto-saves while we run the backup
 server_cmd($user['user'], "/save-off");
 
+//Notify players the world is backing up
+server_cmd($user['user'], "/say [MCBackup] Starting backup...");
+
 if(!is_dir($user['home'] . "/" . "backups")){
 	mkdir($user['home'] . "/" . "backups");
 }
@@ -93,6 +96,9 @@ try {
 	error_log("MCHostPanel Backup: '" . $user . "' Backup Failure!\r\nException : " . $e);
 	exit("Exception : " . $e . "\r\n");
 }
+
+//Notify players the backup is done
+server_cmd($user['user'], "/say [MCBackup] Backup complete");
 
 //Turn auto-saves back on
 server_cmd($user['user'], "/save-on");
