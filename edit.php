@@ -36,6 +36,7 @@ $dir = rtrim($dir, '/');
 <html>
 <head>
 	<title>Edit File | MCHostPanel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">

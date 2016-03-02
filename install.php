@@ -12,7 +12,9 @@ if (!empty($_POST['user'])) {
 <html>
 <head>
 	<title>Install MCHostPanel</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/smooth.css" id="smooth-css">
 	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 </head>
