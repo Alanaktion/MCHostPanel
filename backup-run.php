@@ -78,7 +78,7 @@ if($timeout !== 0) {
 	}
 }
 try {
-	$archiveFile = date('Y-m-d') . " - " . time() . " - Settings.tar";
+	$archiveFile = date('Y-m-d') . " - " . time() . " - Minecraft Backup.tar";
 	//$worldArchiveFile = date('Y-m-d') . " - " . time() . " - World.tar";
 
 	$phar = new PharData($user['home'] . "/" . "backups/" . $archiveFile);
