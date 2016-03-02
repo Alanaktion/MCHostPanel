@@ -1,38 +1,48 @@
 <?php 
-require_once 'inc/lib.php';
+require_once dirname(__FILE__) . '/inc/lib.php';
 
-if(!isset($_GET['secret'])) {
+//CLI overwrites
+if (PHP_SAPI !== 'cli') {
+	error_log("MCHostPanel Backup: Attempted to run backup-run.php over HTTP!");
+	exit("Invalid access type\r\n");
+}
+
+if(!isset($argv[2])) {
 	error_log("MCHostPanel Backup: No secret supplied!");
-	exit("No user supplied!");
+	exit("No user supplied!\r\n");
 }
 
-if(!isset($_GET['user'])) {
+if(!isset($argv[1])) {
 	error_log("MCHostPanel Backup: No user supplied!");
-	exit("No user supplied!");
+	exit("No user supplied!\r\n");
 }
 
-if(!isset($_GET['delete'])) {
+if(!isset($argv[3])) {
 	error_log("MCHostPanel Backup: No backup auto-delete supplied!");
-	exit("No auto-delete supplied!");
+	exit("No auto-delete supplied!\r\n");
 }
 
-if (!$user = user_info($_GET['user'])) {
+$name = $argv[1];
+$secret = $argv[2];
+$delete = $argv[3];
+
+if (!$user = user_info($name)) {
 	// Clean out the supplied user just incase
-	$user = preg_replace('/[^A-Za-z0-9\- ]/', '', $_GET['user']);
+	$user = preg_replace('/[^A-Za-z0-9\- ]/', '', $name);
 	
 	// User does not exist, redirect to login page
 	error_log("MCHostPanel Backup: '" . $user . "' user does not exist!");
-	exit('Not Authorized');
+	exit('Not Authorized\r\n');
 }
 
 //Make sure this page is run via cron and not from URL guessing
-if($_GET['secret'] != hash("sha256", $user['pass'])) {
+if($secret != hash("sha256", $user['pass'])) {
 	error_log("MCHostPanel Backup: Invalid secret!");
-	exit('Not Authorized');
+	exit('Not Authorized\r\n');
 }
 
 if(!server_running($user['user'])) {
-	exit('Server not running');
+	exit('Server not running\r\n');
 }
 
 server_cmd($user['user'], "/save-all");
@@ -45,7 +55,7 @@ if(!is_dir($user['home'] . "/" . "backups")){
 	mkdir($user['home'] . "/" . "backups");
 }
 
-$timeout = intval($_GET['delete']) * 60 * 60; //Convert to seconds
+$timeout = intval($delete) * 60 * 60; //Convert to seconds
 
 if($timeout !== 0) {
 	$backups = array_diff(scandir($user['home'] . "/" . "backups/"), array('.', '..'));
@@ -72,11 +82,11 @@ try {
 	
 } catch (Exception $e) {
 	error_log("MCHostPanel Backup: '" . $user . "' Backup Failure!\r\nException : " . $e);
-	exit("Exception : " . $e);
+	exit("Exception : " . $e . "\r\n");
 }
 
 //Turn auto-saves back on
 server_cmd($user['user'], "/save-on");
 
-echo "MCHostPanel Backup Success";
+echo "MCHostPanel Backup Success\r\n";
 ?>

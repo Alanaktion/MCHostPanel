@@ -11,8 +11,8 @@
  * ...or I could just use Ctrl+R. Sublime Text rocks.
  */
 
-require_once 'data/config.php';
-require_once 'inc/mclogparse.inc.php';
+require_once dirname(__FILE__) . '/../data/config.php';
+require_once dirname(__FILE__) . '/../inc/mclogparse.inc.php';
 
 /*
 8888888888 d8b 888                                     888
@@ -292,7 +292,7 @@ function create_cron($job) {
  */
 function delete_cron($name) {
 	$output = shell_exec('crontab -l');
-	$output = preg_replace("/^.*backup-run\.php\?user\=" . $name . "(.*)[\r\n]/m", "", $output);
+	$output = preg_replace("/^.*backup-run\.php " . $name . "(.*)[\r\n]/m", "", $output);
 	
 	file_put_contents("/tmp/crontab.txt", $output);
 	echo exec("crontab /tmp/crontab.txt");
@@ -305,7 +305,7 @@ function delete_cron($name) {
  */
 function check_cron_exists($name) {
 	$output = shell_exec('crontab -l');
-	return (preg_match("/backup-run\.php\?user\=" . $name . "/", $output));
+	return (preg_match("/backup-run\.php " . $name . "/", $output));
 }
 
 /**
@@ -317,18 +317,19 @@ function get_cron($name) {
 	if(check_cron_exists($name)) {
 		$output = shell_exec('crontab -l');	
 			
-		preg_match("/^.*backup-run\.php\?user\=" . $name . "(.*)/m", $output, $matches);
+		preg_match("/^.*backup-run\.php " . $name . "(.*)/m", $output, $matches);
+		
 		$parts = explode(" ", $matches[0]);
 		
 		//Spooky stuff
 		$freq = explode("/", $parts[1]); //Grab the cron job date stuff
 		$freq = (isset($freq[1]) ? $freq[1] : 1); //freq 1 will have numbers greater than 2 for intervals
-		$url = explode("&", $parts[5]); //Grab the actual job items
-		$delete = explode("=", $url[2]);
+		
+		$delete = $parts[9];
 		
 		$ret = array();
 		$ret["hrFreq"] = $freq;
-		$ret['hrDeleteAfter'] = $delete[1];
+		$ret['hrDeleteAfter'] = $delete;
 		
 		return $ret;
 	} else {
@@ -506,13 +507,15 @@ function server_manage_backup($name, $action, $freq, $deleteAfter) {
 	switch($action) {
 		case "create":
 			if(!check_cron_exists($name)) {
+				
 				$freq = ($freq == 1 ? "*" : "*/" . $freq);
 				
 				// A secret passed to the cron job to prevent people from guessing jobs on improper setups
 				$secret = hash("sha256", $user['pass']);
 				
-				$jobFile = "php " .$_SERVER['DOCUMENT_ROOT'] . "/backup-run.php?user=" . $user['user'] . "&secret=" . $secret . "&delete=" . $deleteAfter;
+				$jobFile = "php " .$_SERVER['DOCUMENT_ROOT'] . "/backup-run.php " . $user['user'] . " " . $secret . " " . $deleteAfter;
 				$job = "0 " . $freq . " * * * " . $jobFile;
+				
 				create_cron($job);
 			}
 			break;
@@ -574,8 +577,8 @@ function user_delete($user) {
 
 // Get user data
 function user_info($user) {
-	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
-		return json_decode(file_get_contents('data/users/' . strtolower(clean_alphanum($user) . '.json')), true);
+	if(is_file(dirname(__FILE__) . '/../data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
+		return json_decode(file_get_contents(dirname(__FILE__) . '/../data/users/' . strtolower(clean_alphanum($user) . '.json')), true);
 	} else {
 		return false;
 	}
