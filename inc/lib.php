@@ -292,7 +292,7 @@ function create_cron($job) {
  */
 function delete_cron($name) {
 	$output = shell_exec('crontab -l');
-	$output = preg_replace("/^.*backup-run\.php " . $name . "(.*)[\r\n]/m", "", $output);
+	$output = preg_replace("/^.*backup-run\.php " . $name . "(.*)[\r\n]/mi", "", $output);
 	
 	file_put_contents("/tmp/crontab.txt", $output);
 	echo exec("crontab /tmp/crontab.txt");
@@ -305,7 +305,7 @@ function delete_cron($name) {
  */
 function check_cron_exists($name) {
 	$output = shell_exec('crontab -l');
-	return (preg_match("/backup-run\.php " . $name . "/", $output));
+	return (preg_match("/backup-run\.php " . $name . "/i", $output));
 }
 
 /**
@@ -317,7 +317,7 @@ function get_cron($name) {
 	if(check_cron_exists($name)) {
 		$output = shell_exec('crontab -l');	
 			
-		preg_match("/^.*backup-run\.php " . $name . "(.*)/m", $output, $matches);
+		preg_match("/^.*backup-run\.php " . $name . "(.*)/mi", $output, $matches);
 		
 		$parts = explode(" ", $matches[0]);
 		

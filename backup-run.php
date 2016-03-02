@@ -27,8 +27,8 @@ $name = $argv[1];
 $secret = $argv[2];
 $delete = $argv[3];
 
-if(is_file(dirname(__FILE__) . '/data/users/' . strtolower(preg_replace('/([^A-Za-z0-9])/','',$name)) . '.json')) {
-	$user = json_decode(file_get_contents(dirname(__FILE__) . '/data/users/' . strtolower(preg_replace('/([^A-Za-z0-9])/','',$name) . '.json')), true);
+if(is_file(dirname(__FILE__) . '/data/users/' . strtolower(preg_replace('/([^A-Za-z0-9\- ])/','',$name)) . '.json')) {
+	$user = json_decode(file_get_contents(dirname(__FILE__) . '/data/users/' . strtolower(preg_replace('/([^A-Za-z0-9\- ])/','',$name) . '.json')), true);
 } else {
 	$user = false;
 }
