@@ -11,8 +11,8 @@
  * ...or I could just use Ctrl+R. Sublime Text rocks.
  */
 
-require_once dirname(__FILE__) . '/../data/config.php';
-require_once dirname(__FILE__) . '/../inc/mclogparse.inc.php';
+require_once 'data/config.php';
+require_once 'inc/mclogparse.inc.php';
 
 /*
 8888888888 d8b 888                                     888
@@ -577,8 +577,8 @@ function user_delete($user) {
 
 // Get user data
 function user_info($user) {
-	if(is_file(dirname(__FILE__) . '/../data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
-		return json_decode(file_get_contents(dirname(__FILE__) . '/../data/users/' . strtolower(clean_alphanum($user) . '.json')), true);
+	if(is_file('data/users/' . strtolower(clean_alphanum($user)) . '.json')) {
+		return json_decode(file_get_contents('data/users/' . strtolower(clean_alphanum($user) . '.json')), true);
 	} else {
 		return false;
 	}

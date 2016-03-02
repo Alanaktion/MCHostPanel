@@ -1,5 +1,6 @@
 <?php 
-require_once dirname(__FILE__) . '/inc/lib.php';
+
+require_once dirname(__FILE__) . '/data/config.php';
 
 //CLI overwrites
 if (PHP_SAPI !== 'cli') {
@@ -26,7 +27,13 @@ $name = $argv[1];
 $secret = $argv[2];
 $delete = $argv[3];
 
-if (!$user = user_info($name)) {
+if(is_file(dirname(__FILE__) . '/data/users/' . strtolower(preg_replace('/([^A-Za-z0-9])/','',$name)) . '.json')) {
+	$user = json_decode(file_get_contents(dirname(__FILE__) . '/data/users/' . strtolower(preg_replace('/([^A-Za-z0-9])/','',$name) . '.json')), true);
+} else {
+	$user = false;
+}
+
+if (!$user) {
 	// Clean out the supplied user just incase
 	$user = preg_replace('/[^A-Za-z0-9\- ]/', '', $name);
 	
@@ -41,7 +48,9 @@ if($secret != hash("sha256", $user['pass'])) {
 	exit('Not Authorized\r\n');
 }
 
-if(!server_running($user['user'])) {
+$running = !!strpos(`screen -ls`, KT_SCREEN_NAME_PREFIX . $name);
+
+if(!$running) {
 	exit('Server not running\r\n');
 }
 
@@ -89,4 +98,21 @@ try {
 server_cmd($user['user'], "/save-on");
 
 echo "MCHostPanel Backup Success\r\n";
+
+/**
+ * Pass a command to a running server
+ * This is a local copy to prevent importing dependencies
+ * @param string $name
+ * @param string $cmd
+ */
+function server_cmd($name,$cmd) {
+	shell_exec(
+		sprintf(
+			KT_SCREEN_CMD_EXEC, // Base command
+			KT_SCREEN_NAME_PREFIX.$name, // Screen Name
+			str_replace(array('\\','"'),array('\\\\','\\"'),(get_magic_quotes_gpc() ? stripslashes($cmd) : $cmd)) // Server command
+		)
+	);
+}
+
 ?>
