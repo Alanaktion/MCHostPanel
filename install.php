@@ -4,6 +4,7 @@ require_once 'inc/lib.php';
 if (!empty($_POST['user'])) {
 	session_start();
 	user_add($_POST['user'], $_POST['pass'], 'admin', $_POST['dir'], $_POST['ram'], $_POST['port']);
+	file_put_contents(".installed", "");
 	$_SESSION['user'] = clean_alphanum($_POST['user']);
 }
 
@@ -16,15 +17,27 @@ if (!empty($_POST['user'])) {
 	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 </head>
 <body>
-<?php if (!empty($_POST['user'])) { ?>
+<?php if (is_file(".installed")) { ?>
+	<div class="modal">
+		<div class="modal-header">
+			<h3>Install MCHostPanel</h3>
+		</div>
+		<div class="modal-body">
+			<p>MCHostPanel has already been installed.</p>
+
+			<p class="alert alert-info">If you are sure it is not installed, delete the <code>.installed</code> file and refresh this page.</p>
+		</div>
+		<div class="modal-footer">
+			<a class="btn btn-success" href="dashboard.php">Continue to Panel</a>
+		</div>
+	</div>
+<?php } elseif (!empty($_POST['user'])) { ?>
 	<div class="modal">
 		<div class="modal-header">
 			<h3>Install MCHostPanel</h3>
 		</div>
 		<div class="modal-body">
 			<p>MCHostPanel has been installed, and you are now logged in.</p>
-
-			<p class="alert alert-error">Delete <code>install.php</code>, otherwise anyone can create an administrator user!</p>
 		</div>
 		<div class="modal-footer">
 			<a class="btn btn-success" href="dashboard.php">Continue to Panel</a>

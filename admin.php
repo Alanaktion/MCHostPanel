@@ -22,10 +22,10 @@ if ($_POST['action'] == 'user-switch' && $_POST['user']) {
 
 //Manage a backup cron job
 if($_POST['action'] == 'backup-manage' && $_POST['user']) {
-	
+
 	//Determine which button (create or delete) was pressed and pass it as an action
 	$action = (isset($_POST['create']) ? "create" : (isset($_POST['delete']) ? "delete" : exit("Action error")));
-	
+
 	server_manage_backup($_POST['user'], $action, intvaL($_POST["hrFreq"]), intval($_POST["hrDeleteAfter"]));
 }
 
@@ -61,7 +61,7 @@ if ($_POST['action'] == 'server-stop')
 	<script type="text/javascript">
 		$(document).ready(function () {
 			check_cron();
-			
+
 			window.setTimeout(function () {
 				$('.alert-success,.alert-error').fadeOut();
 			}, 3000);
@@ -81,7 +81,7 @@ if ($_POST['action'] == 'server-stop')
 
 						$("#hrDeleteAfter").prop("disabled",true);
 						$("#hrFreq").prop("disabled",true);
-						
+
 						$("#hrDeleteAfter").val(data.hrDeleteAfter);
 						$("#hrFreq").val(data.hrFreq);
 					} else {
@@ -90,15 +90,15 @@ if ($_POST['action'] == 'server-stop')
 
 						$("#hrDeleteAfter").removeAttr("disabled");
 						$("#hrFreq").removeAttr("disabled");
-						
+
 						$("#hrDeleteAfter").val(0);
 						$("#hrFreq").val(1);
 					}
 				});
 			}
-			
+
 			$("#backup-user").change(check_cron);
-			
+
 		});
 	</script>
 </head>
@@ -116,9 +116,9 @@ if ($_POST['action'] == 'server-stop')
 	<div class="clearfix"></div>
 	<div class="row-fluid">
 		<div class="span8">
-			<h3>Running Servers</h3>
-			<pre>Running as user: <?php echo `whoami` . "\n" . `screen -ls`; ?></pre>
 			<form action="admin.php" method="post">
+				<legend>Running Servers</legend>
+				<pre>Running as user: <?php echo `whoami` . "\n" . `screen -ls`; ?></pre>
 				<input type="hidden" name="action" value="server-start">
 				<select name="user" style="vertical-align: top;">
 					<optgroup label="Users">
@@ -132,6 +132,7 @@ if ($_POST['action'] == 'server-stop')
 				</select>
 				<button type="submit" class="btn btn-success">Start Server</button>
 			</form>
+
 			<form action="admin.php" method="post">
 				<input type="hidden" name="action" value="server-stop">
 				<select name="user" style="vertical-align: top;">
@@ -147,6 +148,47 @@ if ($_POST['action'] == 'server-stop')
 				</select>
 				<button type="submit" class="btn btn-danger">Kill Server</button>
 			</form>
+
+			<form action="admin.php" method="post">
+				<input type="hidden" name="action" value="backup-manage">
+				<legend>Scheduled Backups</legend>
+				<pre><?php echo shell_exec('crontab -l'); ?></pre>
+				<label class="control-label" for="user">Server</label>
+				<div class="controls">
+					<select name="user" style="vertical-align: top;" id="backup-user">
+						<?php
+						$ul = user_list();
+						foreach ($ul as $u)
+							if($u != "empty")
+								echo '<option value="' . $u . '">' . $u . '</option>';
+						?>
+					</select>
+				</div>
+
+				<label class="control-label" for="ram">Backup frequency</label>
+				<div class="controls">
+					<div class="input-append">
+						<input class="span3" type="number" name="hrFreq" id="hrFreq" value="1">
+						<span class="add-on">Hours</span>
+					</div>
+					<span class="text-info">4 = Every 4 Hours</span>
+				</div>
+
+				<label class="control-label" for="ram">Delete backups older than</label>
+				<div class="controls">
+					<div class="input-append">
+						<input class="span3" type="number" name="hrDeleteAfter" id="hrDeleteAfter" value="0">
+						<span class="add-on">Hours</span>
+					</div>
+					<span class="text-info">0 = Never delete, 4 = Delete after 4 hours</span>
+				</div>
+
+
+				<button type="submit" name="create" id="backup-create" class="btn btn-success">Enable</button>
+				<button type="submit" name="delete" id="backup-delete" class="btn btn-danger">Disable</button>
+			</form>
+		</div>
+		<div class="span4">
 			<form action="admin.php" method="post">
 				<legend>Switch to a User</legend>
 				<input type="hidden" name="action" value="user-switch">
@@ -160,47 +202,7 @@ if ($_POST['action'] == 'server-stop')
 				</select>
 				<button type="submit" class="btn btn-danger">Log In</button>
 			</form>
-			<form action="admin.php" method="post">
-				<input type="hidden" name="action" value="backup-manage">
-				<legend>Scheduled Backups</legend>
-				<h3>Scheduled backups</h3>
-				<pre><?php echo shell_exec('crontab -l'); ?></pre>
-				<label class="control-label" for="user">Server</label>
-				<div class="controls">
-					<select name="user" style="vertical-align: top;" id="backup-user">
-						<?php
-						$ul = user_list();
-						foreach ($ul as $u)
-							if($u != "empty")
-								echo '<option value="' . $u . '">' . $u . '</option>';
-						?>
-					</select>
-				</div>
-				
-				<label class="control-label" for="ram">Backup frequency</label>
-				<div class="controls">
-					<div class="input-append">
-						<input class="span3" type="number" name="hrFreq" id="hrFreq" value="1">
-						<span class="add-on">Hours</span>
-					</div>
-					<span class="text-info">4 = Every 4 Hours</span>
-				</div>
-				
-				<label class="control-label" for="ram">Delete backups older than</label>
-				<div class="controls">
-					<div class="input-append">
-						<input class="span3" type="number" name="hrDeleteAfter" id="hrDeleteAfter" value="0">
-						<span class="add-on">Hours</span>
-					</div>
-					<span class="text-info">0 = Never delete, 4 = Delete after 4 hours</span>
-				</div>
-					
-				
-				<button type="submit" name="create" id="backup-create" class="btn btn-success">Enable</button>
-				<button type="submit" name="delete" id="backup-delete" class="btn btn-danger">Disable</button>
-			</form>
-		</div>
-		<div class="span4">
+
 			<form action="admin.php" method="post" autocomplete="off">
 				<input type="hidden" name="action" value="user-add">
 				<legend>Add New User</legend>
