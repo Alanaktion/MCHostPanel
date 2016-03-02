@@ -15,7 +15,6 @@ MCHostPanel can manage an unlimited number of Minecraft control panels, includin
 - Copy data/config-sample.php to data/config.php
 - Edit data/config.php and set `KT_LOCAL_IP` to your server's public IP address
 - Go to install.php in your browser and set up an administrator user
-- **Delete install.php**
 - Add any Minecraft server .jar file to your home directory
 - Ensure the web server user has write access to the main MCHP and `data/` directories.
 
