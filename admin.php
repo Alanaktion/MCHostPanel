@@ -146,7 +146,7 @@ if ($_POST['action'] == 'server-stop')
 					</optgroup>
 				</select>
 				<button type="submit" class="btn btn-danger">Kill Server</button>
-			</form>			
+			</form>
 			<form action="admin.php" method="post">
 				<legend>Switch to a User</legend>
 				<input type="hidden" name="action" value="user-switch">
