@@ -69,6 +69,7 @@ if(!is_dir($user['home'] . "/" . "backups")){
 
 $timeout = intval($delete) * 60 * 60; //Convert to seconds
 
+//Delete old backups based on their delete interval
 if($timeout !== 0) {
 	$backups = array_diff(scandir($user['home'] . "/" . "backups/"), array('.', '..'));
 	
@@ -82,7 +83,6 @@ if($timeout !== 0) {
 }
 try {
 	$archiveFile = date('Y-m-d') . " - " . time() . " - Minecraft Backup.tar";
-	//$worldArchiveFile = date('Y-m-d') . " - " . time() . " - World.tar";
 
 	$phar = new PharData($user['home'] . "/" . "backups/" . $archiveFile);
 	
