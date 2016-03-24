@@ -1,2 +1,7 @@
-data/*
-.installed
+/vendor
+/node_modules
+/public/css
+/public/storage
+Homestead.yaml
+Homestead.json
+.env
