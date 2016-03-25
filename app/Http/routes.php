@@ -13,16 +13,10 @@
 
 Route::group(['middleware' => ['web']], function () {
 
-    Route::get('/', ["as" => "root", function () {
-        return view('login');
-    }]);
+    Route::get('/', 'IndexController@index');
 
-    Route::post('login/', ["as" => "login", function () {
-        return redirect()->route('dashboard');
-    }]);
+    Route::post('login/', 'IndexController@loginPost');
 
-    Route::get('dashboard/', ["as" => "dashboard", function () {
-        return view('dashboard');
-    }]);
+    Route::get('dashboard/', 'UserController@dashboard');
 
 });
