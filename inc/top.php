@@ -17,10 +17,23 @@
 	</div>
 </div>
 <ul class="nav nav-tabs" id="myTab">
-	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "dashboard.php" ? 'class="active"' : ""; ?>><a href="dashboard.php">Dashboard</a></li>
-	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "files.php" ? 'class="active"' : ""; ?>><a href="files.php">File Manager</a></li>
-	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "console.php" ? 'class="active"' : ""; ?>><a href="console.php">Console</a></li>
+	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "dashboard.php" ? 'class="active"' : ""; ?>>
+		<a href="dashboard.php">Dashboard</a>
+	</li>
+	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "files.php" ? 'class="active"' : ""; ?>>
+		<a href="files.php">File Manager</a>
+	</li>
+	<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "console.php" ? 'class="active"' : ""; ?>>
+		<a href="console.php">Console</a>
+	</li>
 	<?php if(is_file($user["home"] . "/plugins/dynmap/configuration.txt")) { ?>
-		<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "map.php" ? 'class="active"' : ""; ?>><a href="map.php">Map&ensp;<span class="badge">BETA</span></a></li>
+		<?php
+			require_once 'inc/Spyc.php';
+			$config = spyc_load_file($user["home"] . "/plugins/dynmap/configuration.txt");
+			$port = $config["webserver-port"];
+		?>
+		<li <?php echo basename($_SERVER["SCRIPT_NAME"]) == "map.php" ? 'class="active"' : ""; ?>>
+			<a href="map.php">Map&ensp;<i class="icon-share" onclick="window.open('http://<?php echo $_SERVER['HTTP_HOST']; ?>:<?php echo $port; ?>/'); return false;"></i></a>
+		</li>
 	<?php } ?>
 </ul>

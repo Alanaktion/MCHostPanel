@@ -91,7 +91,7 @@ if (empty($_SESSION['user']) || !$user = user_info($_SESSION['user'])) {
 
 			// Keep sizing correct
 			$(document).resize(function () {
-				$('#log').css('height', $(window).height() - 190 + 'px');
+				$('#log').css('height', $(window).height() - 200 + 'px');
 			});
 
 		});

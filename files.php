@@ -102,8 +102,8 @@ $(document).ready(function () {
 			},function (data) {
 				loaddir(window.lastdir);
 			}).error(function () {
-					alert('There was an error deleting your files.');
-				});
+				alert('There was an error deleting your files.');
+			});
 		}
 	});
 
@@ -279,7 +279,6 @@ function basename(path, suffix) {
 		<h3 id="lbl-upload">Upload Files</h3>
 	</div>
 	<div class="modal-body">
-		<noframes>Your browser sucks. Upgrade it. Seriously, frames have been supported since '95.</noframes>
 		<iframe src="uploader.php" id="iframe-upload" border="0" frameborder="0" style="width:100%;height:125px;" allowtransparency="true"></iframe>
 	</div>
 </div>

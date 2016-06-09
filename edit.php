@@ -47,7 +47,7 @@ $dir = rtrim($dir, '/');
 	<script type="text/javascript">
 		var edited = false;
 		$(document).ready(function () {
-			$('textarea').css('height', $(window).height() - 200 + 'px')
+			$('textarea').css('height', $(window).height() - 240 + 'px')
 				.on('change', function () {
 					window.edited = true;
 				});
@@ -68,7 +68,7 @@ $dir = rtrim($dir, '/');
 			}, 4000);
 		});
 		$(document).resize(function () {
-			$('textarea').css('height', $(window).height() - 200 + 'px');
+			$('textarea').css('height', $(window).height() - 240 + 'px');
 		});
 	</script>
 </head>
