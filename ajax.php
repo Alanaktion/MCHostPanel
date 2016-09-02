@@ -89,6 +89,9 @@ switch ($_POST['req']) {
 		} elseif(is_file($user['home'] . "/server.log")) {
 			// 1.6 and earlier
 			echo mclogparse2(file_backread($user['home'] . '/server.log', 64));
+		} elseif(is_file($user['home'] . "/proxy.log.0")) {
+                        // BungeeCord
+                        echo mclogparse2(file_backread($user['home'] . '/proxy.log.0', 64));
 		} else {
 			echo "No log file found.";
 		}
@@ -101,6 +104,8 @@ switch ($_POST['req']) {
 			$file = $user['home'] . '/logs/latest.log';
 		} elseif(is_file($user['home'] . '/server.log')) {
 			$file = $user['home'] . '/server.log';
+		} elseif(is_file($user['home'] . '/proxy.log.0')) {
+                        $file = $user['home'] . '/proxy.log.0';
 		} else {
 			exit(json_encode(array('error' => 1, 'msg' => 'No log file found.')));
 		}
