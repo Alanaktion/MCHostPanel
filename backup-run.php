@@ -61,7 +61,7 @@ sleep(30);
 server_cmd($user['user'], "save-off");
 
 //Notify players the world is backing up
-server_cmd($user['user'], "say [MCBackup] Starting backup...");
+server_cmd($user['user'], 'tellraw @a ["",{"text":"[MCBackup]","color":"yellow"},{"text":" "},{"text":"Starting backup!","bold":true,"hoverEvent":{"action":"show_text","value":"You may experience slight performance drops while this takes place."}}]');
 
 if(!is_dir($user['home'] . "/" . "backups")){
 	mkdir($user['home'] . "/" . "backups");
@@ -98,7 +98,7 @@ try {
 }
 
 //Notify players the backup is done
-server_cmd($user['user'], "say [MCBackup] Backup complete");
+server_cmd($user['user'], 'tellraw @a ["",{"text":"[MCBackup] ","color":"yellow"},{"text":"Backup finished!"}]');
 
 //Turn auto-saves back on
 server_cmd($user['user'], "save-on");
