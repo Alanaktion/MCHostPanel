@@ -10,7 +10,7 @@ if (PHP_SAPI !== 'cli') {
 
 if(!isset($argv[2])) {
 	error_log("MCHostPanel Backup: No secret supplied!");
-	exit("No user supplied!\r\n");
+	exit("No secret supplied!\r\n");
 }
 
 if(!isset($argv[1])) {
