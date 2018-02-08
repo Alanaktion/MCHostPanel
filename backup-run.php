@@ -10,7 +10,7 @@ if (PHP_SAPI !== 'cli') {
 
 if(!isset($argv[2])) {
 	error_log("MCHostPanel Backup: No secret supplied!");
-	exit("No user supplied!\r\n");
+	exit("No secret supplied!\r\n");
 }
 
 if(!isset($argv[1])) {
@@ -54,14 +54,14 @@ if(!$running) {
 	exit('Server not running\r\n');
 }
 
-server_cmd($user['user'], "/save-all");
+server_cmd($user['user'], "save-all");
 //Give the server a chance to save
 sleep(30);
 //Prevent auto-saves while we run the backup
-server_cmd($user['user'], "/save-off");
+server_cmd($user['user'], "save-off");
 
 //Notify players the world is backing up
-server_cmd($user['user'], "/say [MCBackup] Starting backup...");
+server_cmd($user['user'], 'tellraw @a ["",{"text":"[MCBackup]","color":"yellow"},{"text":" "},{"text":"Starting backup!","bold":true,"hoverEvent":{"action":"show_text","value":"You may experience slight performance drops while this takes place."}}]');
 
 if(!is_dir($user['home'] . "/" . "backups")){
 	mkdir($user['home'] . "/" . "backups");
@@ -98,10 +98,10 @@ try {
 }
 
 //Notify players the backup is done
-server_cmd($user['user'], "/say [MCBackup] Backup complete");
+server_cmd($user['user'], 'tellraw @a ["",{"text":"[MCBackup] ","color":"yellow"},{"text":"Backup finished!"}]');
 
 //Turn auto-saves back on
-server_cmd($user['user'], "/save-on");
+server_cmd($user['user'], "save-on");
 
 echo "MCHostPanel Backup Success\r\n";
 
