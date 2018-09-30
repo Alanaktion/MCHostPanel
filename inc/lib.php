@@ -700,7 +700,8 @@ function base64_salt($len = 22) {
 }
 
 // Securely encrypt a password
-function bcrypt($str) {
+// deprecated
+/*function bcrypt($str) {
 	$salt = strtr(base64_salt(22),'+','.');
 	$work = 13;
 	$salt = sprintf('$2y$%s$%s',$work,$salt);
@@ -709,11 +710,24 @@ function bcrypt($str) {
 		return $hash;
 	else
 		return false;
-}
+}*/
 
 // Verify a bcrypt-encyrpted string
-function bcrypt_verify($str,$hash) {
+// deprecated
+/*function bcrypt_verify($str,$hash) {
 	return (crypt($str,$hash) === $hash);
 }
+*/
+
+//function naming left same for easier implementation
+//create pasword hash php default encryption
+function bcrypt($pw){
+	return password_hash($pw, PASSWORD_DEFAULT);
+}
+//verify password
+function bcrypt_verify($pw, $hash){
+	return password_verify($pw, $hash);
+}
+
 
 ?>
