@@ -19,7 +19,7 @@ if (!empty($_SESSION['user'])) {
 	$_SESSION['is_admin'] = $user['role'] == 'admin';
 
 	// Check user exists and password is good
-	if (!$user || !bcrypt_verify($_POST['pass'], $user['pass'])) {
+	if (!$user || !bcrypt_verify($_POST['pass'], $user['pass'], $user['user'])) {
 		// Login failure, redirect to login page
 		header('Location: ./?error=badlogin');
 		exit('Not Authorized');

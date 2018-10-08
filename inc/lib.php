@@ -725,8 +725,22 @@ function bcrypt($pw){
 	return password_hash($pw, PASSWORD_DEFAULT);
 }
 //verify password
-function bcrypt_verify($pw, $hash){
-	return password_verify($pw, $hash);
+function bcrypt_verify($pw, $hash, $user){
+	$hashBoolean = password_verify($pw, $hash);
+	if($hashBoolean && testForBcrypt($hash)){
+		$userInfo = user_info($user);
+		$pass = bcrypt($pw);
+		return user_modify($user,$pass,$userInfo['role'],$userInfo['home'],$userInfo['ram'],$userInfo['port'],$userInfo['jar']);
+	}else{
+		return $hashBoolean;
+	}
+}
+
+function testForBcrypt($hash)
+{	
+	$needle = "\$2y\$13";
+    $length = strlen($needle);
+    return (substr($hash, 0, $length) === $needle);
 }
 
 
