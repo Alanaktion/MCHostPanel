@@ -726,16 +726,18 @@ function bcrypt($pw){
 }
 //verify password
 function bcrypt_verify($pw, $hash, $user){
+	//get boolean if password i correct
 	$hashBoolean = password_verify($pw, $hash);
+	//if password is correct and in bcrypt format -> update, else return if password is correct
 	if($hashBoolean && testForBcrypt($hash)){
 		$userInfo = user_info($user);
-		$pass = bcrypt($pw);
-		return user_modify($user,$pass,$userInfo['role'],$userInfo['home'],$userInfo['ram'],$userInfo['port'],$userInfo['jar']);
+		return user_modify($user,$pw,$userInfo['role'],$userInfo['home'],$userInfo['ram'],$userInfo['port'],$userInfo['jar']);
 	}else{
 		return $hashBoolean;
 	}
 }
 
+//checking for bcrypt hash start in hash
 function testForBcrypt($hash)
 {	
 	$needle = "\$2y\$13";
