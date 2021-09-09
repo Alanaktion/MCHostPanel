@@ -23,15 +23,16 @@ if(strpos($_REQUEST['file'], '..') !== false) {
 if (isset($_POST['text']) && !empty($_POST['file'])) {
 	$file = $user['home'] . $_POST['file'];
 	$text = $_POST['text'];
-	if (get_magic_quotes_gpc())
+	if (function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc())
 		$text = stripslashes($text);
 	$saved = file_put_contents($file, $text);
 }
 
 // Determine current directory
-$dir = rtrim($_REQUEST['file'], basename($_REQUEST['file']));
+$dir = dirname($_REQUEST['file']);
 $dir = rtrim($dir, '/');
 
+$file = $user['home'] . sanitize_path($_REQUEST['file']);
 ?><!doctype html>
 <html>
 <head>
@@ -77,7 +78,7 @@ $dir = rtrim($dir, '/');
 <div class="container-fluid">
 	<form action="edit.php" method="post">
 		<div class="row-fluid">
-			<h3 style="font-weight:400;" class="pull-left">Editing <?php echo $_REQUEST['file']; ?></h3>
+			<h3 style="font-weight:400;" class="pull-left">Editing <?php echo htmlspecialchars($_REQUEST['file']); ?></h3>
 			<?php if (isset($_POST['text']) && $saved !== false) { ?>
 				<p class="alert alert-success pull-right"><i class="icon-ok"></i> File was successfully saved.</p>
 			<?php } elseif (isset($_POST['text'])) { ?>
@@ -86,12 +87,12 @@ $dir = rtrim($dir, '/');
 				<p class="alert alert-info pull-right">File reloaded.</p>
 			<?php } ?>
 			<div class="clearfix"></div>
-			<input type="hidden" name="file" value="<?php echo $_REQUEST['file']; ?>">
-			<textarea name="text" style="width:100%;box-sizing:border-box;-moz-box-sizing:border-box;font-family:monospace;"><?php echo htmlspecialchars(file_get_contents($user['home'] . $_REQUEST['file'])); ?></textarea>
+			<input type="hidden" name="file" value="<?php echo htmlspecialchars($_REQUEST['file']); ?>">
+			<textarea name="text" style="width:100%;box-sizing:border-box;-moz-box-sizing:border-box;font-family:monospace;"><?php echo htmlspecialchars(file_get_contents($file)); ?></textarea>
 
 			<div class="btn-toolbar" style="text-align: right;">
-				<a href="files.php?dir=<?php echo urlencode($dir); ?>" id="cancel" class="btn">Cancel</a>
-				<a href="edit.php?file=<?php echo urlencode($_REQUEST['file']); ?>&action=reload" id="reload" class="btn btn-danger"><i class="icon-repeat icon-white"></i> Reload File</a>
+				<a href="files.php?dir=<?php echo htmlspecialchars(urlencode($dir)); ?>" id="cancel" class="btn">Cancel</a>
+				<a href="edit.php?file=<?php echo htmlspecialchars(urlencode($_REQUEST['file'])); ?>&action=reload" id="reload" class="btn btn-danger"><i class="icon-repeat icon-white"></i> Reload File</a>
 				<button type="submit" class="btn btn-primary"><i class="icon-download-alt icon-white"></i> Save File</button>
 			</div>
 		</div>

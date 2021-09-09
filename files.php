@@ -147,7 +147,7 @@ $(document).ready(function () {
 	$('button.ht').tooltip();
 
 	// Load requested directory
-	loaddir('<?php echo $_GET["dir"] ? $_GET["dir"] : '/'; ?>');
+	loaddir('<?php echo !empty($_GET["dir"]) ? addslashes(htmlspecialchars($_GET["dir"])) : '/'; ?>');
 
 });
 

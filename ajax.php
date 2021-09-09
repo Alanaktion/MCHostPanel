@@ -12,12 +12,12 @@ switch ($_POST['req']) {
 		$files = array();
 
 		// Get directory contents
-		$h = opendir($user['home'] . $_POST['dir']);
+		$h = opendir($user['home'] . sanitize_path($_POST['dir']));
 		while (false !== ($f = readdir($h)))
 			if ($f != '.' && $f != '..')
-				if (is_dir($user['home'] . $_POST['dir'] . '/' . $f))
+				if (is_dir($user['home'] . sanitize_path($_POST['dir']) . '/' . $f))
 					$dirs[] = $f;
-				elseif (is_file($user['home'] . $_POST['dir'] . '/' . $f))
+				elseif (is_file($user['home'] . sanitize_path($_POST['dir']) . '/' . $f))
 					$files[] = $f;
 		closedir($h);
 		unset($f);
@@ -29,7 +29,7 @@ switch ($_POST['req']) {
 		// Get file sizes
 		$sizes = array();
 		foreach ($files as $f)
-			$sizes[] = filesize($user['home'] . $_POST['dir'] . '/' . $f);
+			$sizes[] = filesize($user['home'] . sanitize_path($_POST['dir']) . '/' . $f);
 
 		// Output data
 		echo json_encode(array(
@@ -40,17 +40,17 @@ switch ($_POST['req']) {
 
 		break;
 	case 'file_get':
-		if (is_file($user['home'] . $_POST['file']))
-			echo file_get_contents($user['home'] . $_POST['file']);
+		if (is_file($user['home'] . sanitize_path($_POST['file'])))
+			echo file_get_contents($user['home'] . sanitize_path($_POST['file']));
 		break;
 	case 'file_put':
-		if (is_file($user['home'] . $_POST['file']))
-			file_put_contents($user['home'] . $_POST['file'], $_POST['data']);
+		if (is_file($user['home'] . sanitize_path($_POST['file'])))
+			file_put_contents($user['home'] . sanitize_path($_POST['file']), $_POST['data']);
 		break;
 	case 'delete':
 		foreach ($_POST['files'] as $f)
-			if (is_file($user['home'] . $f))
-				unlink($user['home'] . $f);
+			if (is_file($user['home'] . sanitize_path($f)))
+				unlink($user['home'] . sanitize_path($f));
 		break;
 	case 'rename':
 		file_rename($_POST['path'], $_POST['newname'], $user['home']);
@@ -90,8 +90,8 @@ switch ($_POST['req']) {
 			// 1.6 and earlier
 			echo mclogparse2(file_backread($user['home'] . '/server.log', 64));
 		} elseif(is_file($user['home'] . "/proxy.log.0")) {
-                        // BungeeCord
-                        echo mclogparse2(file_backread($user['home'] . '/proxy.log.0', 64));
+			// BungeeCord
+			echo mclogparse2(file_backread($user['home'] . '/proxy.log.0', 64));
 		} else {
 			echo "No log file found.";
 		}
@@ -105,7 +105,7 @@ switch ($_POST['req']) {
 		} elseif(is_file($user['home'] . '/server.log')) {
 			$file = $user['home'] . '/server.log';
 		} elseif(is_file($user['home'] . '/proxy.log.0')) {
-                        $file = $user['home'] . '/proxy.log.0';
+			$file = $user['home'] . '/proxy.log.0';
 		} else {
 			exit(json_encode(array('error' => 1, 'msg' => 'No log file found.')));
 		}

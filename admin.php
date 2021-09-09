@@ -6,14 +6,14 @@ if ((!$user = user_info($_SESSION['user'])) && !$_SESSION['user']) {
 	// Not logged in, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
-} elseif (!$_SESSION['is_admin'] && $user['role'] != 'admin') {
+} elseif (empty($_SESSION['is_admin']) && $user['role'] != 'admin') {
 	// Not an admin, redirect to login page
 	header('Location: .');
 	exit('Not Authorized');
 }
 
 // Switch users
-if ($_POST['action'] == 'user-switch' && $_POST['user']) {
+if (isset($_POST['action']) && $_POST['action'] == 'user-switch' && $_POST['user']) {
 	$_SESSION['is_admin'] = true;
 	$_SESSION['user'] = $_POST['user'];
 	header('Location: .');
@@ -21,7 +21,7 @@ if ($_POST['action'] == 'user-switch' && $_POST['user']) {
 }
 
 //Manage a backup cron job
-if($_POST['action'] == 'backup-manage' && $_POST['user']) {
+if (isset($_POST['action']) && $_POST['action'] == 'backup-manage' && $_POST['user']) {
 
 	//Determine which button (create or delete) was pressed and pass it as an action
 	$action = (isset($_POST['create']) ? "create" : (isset($_POST['delete']) ? "delete" : exit("Action error")));
@@ -30,18 +30,18 @@ if($_POST['action'] == 'backup-manage' && $_POST['user']) {
 }
 
 // Add new user
-if ($_POST['action'] == 'user-add')
+if (isset($_POST['action']) && $_POST['action'] == 'user-add')
 	user_add($_POST['user'], $_POST['pass'], $_POST['role'], $_POST['dir'], $_POST['ram'], $_POST['port']);
 
 // Start a server
-if ($_POST['action'] == 'server-start') {
+if (isset($_POST['action']) && $_POST['action'] == 'server-start') {
 	$stu = user_info($_POST['user']);
 	if (!server_running($stu['user']))
 		server_start($stu['user']);
 }
 
 // Kill a server
-if ($_POST['action'] == 'server-stop')
+if (isset($_POST['action']) && $_POST['action'] == 'server-stop')
 	if ($_POST['user'] == 'ALL')
 		server_kill_all();
 	else
@@ -107,11 +107,11 @@ if ($_POST['action'] == 'server-stop')
 <?php require 'inc/top.php'; ?>
 <div class="container-fluid">
 	<h1 class="pull-left">Administration</h1>
-	<?php if ($_POST['action'] == 'user-add') { ?>
+	<?php if (isset($_POST['action']) && $_POST['action'] == 'user-add') { ?>
 		<p class="alert alert-success pull-right"><i class="icon-ok"></i> User added successfully.</p>
-	<?php } elseif ($_POST['action'] == 'server-start') { ?>
+	<?php } elseif (isset($_POST['action']) && $_POST['action'] == 'server-start') { ?>
 		<p class="alert alert-success pull-right"><i class="icon-ok"></i> Server started.</p>
-	<?php } elseif ($_POST['action'] == 'server-stop') { ?>
+	<?php } elseif (isset($_POST['action']) && $_POST['action'] == 'server-stop') { ?>
 		<p class="alert alert-success pull-right"><i class="icon-ok"></i> Server killed.</p>
 	<?php } ?>
 	<div class="clearfix"></div>

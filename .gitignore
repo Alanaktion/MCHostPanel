@@ -1,0 +1,5 @@
+/data/config.php
+/data/users/*.json
+/inc/skintmp/
+/.vscode
+/.installed

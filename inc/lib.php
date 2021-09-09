@@ -36,6 +36,8 @@ require_once 'inc/mclogparse.inc.php';
  * @return bool
  */
 function file_rename($path,$newname,$home) {
+	$path = sanitize_path($path);
+	$newname = sanitize_path($newname);
 	return rename($home.$path,$home.rtrim($path,basename($path)).$newname);
 }
 
@@ -47,6 +49,7 @@ function file_rename($path,$newname,$home) {
  * @return void
  */
 function download($path,$home,$force = true) {
+	$path = sanitize_path($path);
 	if(is_file($home.$path) && $force) {
 		header('Content-type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="'.basename($path).'";');
@@ -70,6 +73,7 @@ function download($path,$home,$force = true) {
  * @return string
  */
 function mimetype($filename) {
+	$filename = sanitize_path($filename);
 	$mime_types = array(
 		'txt' => 'text/plain',
 		'htm' => 'text/html',
@@ -138,6 +142,7 @@ function mimetype($filename) {
  * @return int
  */
 function getsize($file) {
+	$file = sanitize_path($file);
 	$size = filesize($file);
 	if($size < 0)
 		if(!(strtoupper(substr(PHP_OS,0,3))=='WIN'))
@@ -145,7 +150,7 @@ function getsize($file) {
 		else {
 			$fsobj = new COM('Scripting.FileSystemObject');
 			$f = $fsobj->GetFile($file);
-			$size = $file->Size;
+			$size = $f->Size;
 		}
 	return $size;
 }
@@ -171,6 +176,7 @@ function __file_backread_helper(&$haystack,$needle,$x) {
  * @return string
  */
 function file_backread($file,$lines,&$fsize=0){
+	$file = sanitize_path($file);
     $f=fopen($file,'r');
     if(!$f)return Array();
 
@@ -181,8 +187,7 @@ function file_backread($file,$lines,&$fsize=0){
     $fsize=filesize($file);
     $pos=$fsize;
 
-    $buff1=Array();
-    $cnt=0;
+    $buff1=array();
 
     while($pos)
     {
@@ -213,12 +218,15 @@ function file_backread($file,$lines,&$fsize=0){
  * @return string|bool
  */
 function file_download($url,$path) {
+	$url = sanitize_path($url);
 	$file = fopen($url,'rb');
 	if($file) {
 		$newf = fopen($path,'wb');
-		if($newf)
+		if($newf) {
 			while(!feof($file))
 				fwrite($newf,fread($file,1024*8),1024*8);
+			fclose($newf);
+		}
 		else
 			return false;
 	}
@@ -227,9 +235,6 @@ function file_download($url,$path) {
 		fclose($file);
 	else
 		return false;
-
-	if($newf)
-		fclose($newf);
 
 	return $path;
 }
@@ -241,6 +246,8 @@ function file_download($url,$path) {
  * @return bool
  */
 function rmdirr($dirname) {
+	$dirname = sanitize_path($dirname);
+
 	// Sanity check
 	if(!file_exists($dirname))
 		return false;
@@ -451,7 +458,7 @@ function server_cmd($name,$cmd) {
 		sprintf(
 			KT_SCREEN_CMD_EXEC, // Base command
 			KT_SCREEN_NAME_PREFIX.$name, // Screen Name
-			str_replace(array('\\','"'),array('\\\\','\\"'),(get_magic_quotes_gpc() ? stripslashes($cmd) : $cmd)) // Server command
+			str_replace(array('\\','"'),array('\\\\','\\"'),((function_exists("get_magic_quotes_gpc") && get_magic_quotes_gpc()) ? stripslashes($cmd) : $cmd)) // Server command
 		)
 	);
 }
@@ -675,6 +682,15 @@ function check_email($email) {
 	return filter_var($email,FILTER_VALIDATE_EMAIL);
 }
 
+// Sanitize a path string
+function sanitize_path($path) {
+	$path = preg_replace('/\.{2,}/', '.', $path);
+	$path = preg_replace('/\/+$/', '', $path);
+	$path = str_replace('./', '/', $path);
+	$path = preg_replace('/\/{2,}/', '/', $path);
+	return $path;
+}
+
 
 /*
  .d8888b.                            888                                              888
@@ -695,7 +711,7 @@ function base64_salt($len = 22) {
 	$characterList = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/';
 	$salt = '';
 	for($i=0;$i<$len;$i++)
-		$salt.= $characterList{mt_rand(0,(strlen($characterList)-1))};
+		$salt.= $characterList[mt_rand(0,(strlen($characterList)-1))];
 	return $salt;
 }
 
