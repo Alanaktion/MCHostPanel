@@ -1,7 +1,9 @@
 <?php
 require_once 'inc/lib.php';
 
-if (!empty($_POST['user'])) {
+$installed = is_file(__DIR__ . '/.installed');
+
+if (!$installed && !empty($_POST['user'])) {
 	session_start();
 	user_add($_POST['user'], $_POST['pass'], 'admin', $_POST['dir'], $_POST['ram'], $_POST['port']);
 	file_put_contents(".installed", "");
@@ -19,7 +21,7 @@ if (!empty($_POST['user'])) {
 	<meta name="author" content="Alan Hardman (http://phpizza.com)">
 </head>
 <body>
-<?php if (is_file(".installed")) { ?>
+<?php if ($installed) { ?>
 	<div class="modal">
 		<div class="modal-header">
 			<h3>Install MCHostPanel</h3>
