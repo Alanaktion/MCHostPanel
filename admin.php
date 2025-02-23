@@ -26,7 +26,11 @@ if (isset($_POST['action']) && $_POST['action'] == 'backup-manage' && $_POST['us
 	//Determine which button (create or delete) was pressed and pass it as an action
 	$action = (isset($_POST['create']) ? "create" : (isset($_POST['delete']) ? "delete" : exit("Action error")));
 
-	server_manage_backup($_POST['user'], $action, intvaL($_POST["hrFreq"]), intval($_POST["hrDeleteAfter"]));
+	if ($action == 'create') {
+		server_manage_backup($_POST['user'], $action, intval($_POST["hrFreq"]), intval($_POST["hrDeleteAfter"]));
+	} else {
+		server_manage_backup($_POST['user'], $action, 1, 0);
+	}
 }
 
 // Add new user
@@ -169,7 +173,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'server-stop')
 				<label class="control-label" for="ram">Backup frequency</label>
 				<div class="controls">
 					<div class="input-append">
-						<input class="span3" type="number" name="hrFreq" id="hrFreq" value="1">
+						<input class="span3" type="number" name="hrFreq" id="hrFreq" min="0" step="1" value="1">
 						<span class="add-on">Hours</span>
 					</div>
 					<span class="text-info">4 = Every 4 Hours</span>
@@ -178,7 +182,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'server-stop')
 				<label class="control-label" for="ram">Delete backups older than</label>
 				<div class="controls">
 					<div class="input-append">
-						<input class="span3" type="number" name="hrDeleteAfter" id="hrDeleteAfter" value="0">
+						<input class="span3" type="number" name="hrDeleteAfter" id="hrDeleteAfter" min="0" step="1" value="0">
 						<span class="add-on">Hours</span>
 					</div>
 					<span class="text-info">0 = Never delete, 4 = Delete after 4 hours</span>
@@ -242,7 +246,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'server-stop')
 
 					<div class="controls">
 						<div class="input-append">
-							<input class="span3" type="number" name="ram" id="ram" value="512">
+							<input class="span3" type="number" name="ram" id="ram" min="0" step="1" value="512">
 							<span class="add-on">MB</span>
 						</div>
 						<span class="text-info">0 MB = No Server</span>
@@ -252,7 +256,7 @@ if (isset($_POST['action']) && $_POST['action'] == 'server-stop')
 					<label class="control-label" for="port">Server Port</label>
 
 					<div class="controls">
-						<input class="span3" type="number" name="port" id="port" value="25565">
+						<input class="span3" type="number" name="port" id="port" min="0" step="1" value="25565">
 						<span class="text-info">0 = No Server</span>
 					</div>
 				</div>

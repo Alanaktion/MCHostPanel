@@ -89,7 +89,7 @@ if (!$installed && !empty($_POST['user'])) {
 
 				<div class="controls">
 					<div class="input-append">
-						<input class="span3" type="number" name="ram" id="ram" value="512">
+						<input class="span3" type="number" name="ram" id="ram" min="0" step="1" value="512">
 						<span class="add-on">MB</span>
 					</div>
 					<span class="text-info">0 MB = No Server</span>
@@ -99,7 +99,7 @@ if (!$installed && !empty($_POST['user'])) {
 				<label class="control-label" for="port">Server Port</label>
 
 				<div class="controls">
-					<input class="span3" type="number" name="port" id="port" value="25565">
+					<input class="span3" type="number" name="port" id="port" min="0" step="1" value="25565">
 					<span class="text-info">0 = No Server</span>
 				</div>
 			</div>

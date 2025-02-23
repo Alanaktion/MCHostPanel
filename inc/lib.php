@@ -123,7 +123,8 @@ function mimetype($filename) {
 		'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
 	);
 
-	$ext = strtolower(array_pop(explode('.',$filename)));
+	$parts = explode('.',$filename);
+	$ext = strtolower(array_pop($parts));
 	if(array_key_exists($ext, $mime_types)) {
 		return $mime_types[$ext];
 	} elseif(function_exists('finfo_open')) {
@@ -332,6 +333,9 @@ function delete_cron($name) {
  */
 function check_cron_exists($name) {
 	$output = shell_exec('crontab -l');
+	if ($output === null) {
+		return false;
+	}
 	return (preg_match("/backup-run\.php " . preg_quote(escapeshellarg($name)) . "/i", $output));
 }
 

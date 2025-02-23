@@ -1,13 +1,13 @@
 ## MCHostPanel
 A lightweight Minecraft control panel for hosting companies
 
-MCHostPanel can manage an unlimited number of Minecraft control panels, including CraftBukkit, Tekkit, and any other custom build that uses a .jar file.
+MCHostPanel can manage an unlimited number of Minecraft control panels, including Spigot, Tekkit, and any other custom build that uses a .jar file.
 
 ### Requirements
 
-- PHP 5.3+ with GD library (GD only used for player faces)
+- PHP 5/7/8+ with GD library (GD only used for player faces)
 - GNU Screen (installed by default on many platforms)
-- Java 6/7 Headless (OpenJDK JRE works great)
+- Java Headless (OpenJDK JRE works great)
 
 ### Installation
 

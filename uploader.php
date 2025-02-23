@@ -35,7 +35,7 @@ if (isset($_FILES['files']) && isset($_POST['dir'])) {
 	</style>
 </head>
 <body>
-<?php if ($numfiles) { ?>
+<?php if (!empty($numfiles)) { ?>
 	<p class="alert alert-success"><?php echo $numfiles; ?> file<?php echo $numfiles > 1 ? 's were' : ' was'; ?> uploaded successfully.</p>
 	<div style="position:absolute;bottom:0;right:0;">
 		<button type="button" class="btn" onclick="top.$('#modal-upload').modal('hide');top.loaddir('<?php echo $_POST['dir']; ?>')">Close</button>
